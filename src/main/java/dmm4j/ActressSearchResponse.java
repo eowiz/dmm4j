@@ -3,10 +3,12 @@ package dmm4j;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
 public class ActressSearchResponse {
 
     private ActressSearchRequest request;
@@ -14,12 +16,14 @@ public class ActressSearchResponse {
     private ActressSearchResult result;
 
     @Data
+    @NoArgsConstructor
     public static class ActressSearchRequest {
 
         private ActressSearchParameters parameters;
     }
 
     @Data
+    @NoArgsConstructor
     public static class ActressSearchResult {
 
         private String status;
@@ -34,6 +38,7 @@ public class ActressSearchResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Actress {
 
         private String id;
@@ -69,6 +74,7 @@ public class ActressSearchResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class ImageUrl {
 
         private String small;
@@ -77,6 +83,7 @@ public class ActressSearchResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class ListUrl {
 
         private String digital;

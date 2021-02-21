@@ -1,11 +1,11 @@
 package dmm4j;
 
-import lombok.Builder;
-import lombok.NonNull;
-import lombok.Value;
+import lombok.*;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthorSearchParameters {
 
     @NonNull

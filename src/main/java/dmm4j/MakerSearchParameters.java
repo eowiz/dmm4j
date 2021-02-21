@@ -1,10 +1,11 @@
 package dmm4j;
 
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MakerSearchParameters {
 
     String apiId;

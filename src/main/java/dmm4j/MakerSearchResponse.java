@@ -1,10 +1,12 @@
 package dmm4j;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class MakerSearchResponse {
 
     private MakerSearchRequest request;
@@ -12,12 +14,14 @@ public class MakerSearchResponse {
     private MakerSearchResult result;
 
     @Data
+    @NoArgsConstructor
     public static class MakerSearchRequest {
 
         private MakerSearchParameters parameters;
     }
 
     @Data
+    @NoArgsConstructor
     public static class MakerSearchResult {
 
         private String status;
@@ -46,6 +50,7 @@ public class MakerSearchResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Maker {
 
         private String makerId;

@@ -1,8 +1,10 @@
 package dmm4j;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class SeriesSearchResponse {
 
     private SeriesSearchRequest request;
@@ -10,12 +12,14 @@ public class SeriesSearchResponse {
     private SeriesSearchResult result;
 
     @Data
+    @NoArgsConstructor
     public static class SeriesSearchRequest {
 
         private SeriesSearchParameters parameters;
     }
 
     @Data
+    @NoArgsConstructor
     public static class SeriesSearchResult {
 
         private String status;
@@ -44,6 +48,7 @@ public class SeriesSearchResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Series {
 
         private String seriesId;

@@ -3,11 +3,13 @@ package dmm4j;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class ItemListResponse {
 
     private ItemListRequest request;
@@ -15,12 +17,14 @@ public class ItemListResponse {
     private ItemListResult result;
 
     @Data
+    @NoArgsConstructor
     public static class ItemListRequest {
 
         private ItemListParameters parameters;
     }
 
     @Data
+    @NoArgsConstructor
     public static class ItemListResult {
 
         private String status;
@@ -35,6 +39,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Item {
 
         private String serviceCode;
@@ -103,6 +108,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Review {
 
         private int count;
@@ -111,6 +117,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class ImageUrl {
 
         private String list;
@@ -120,6 +127,8 @@ public class ItemListResponse {
         private String large;
     }
 
+    @Data
+    @NoArgsConstructor
     public static class Tachiyomi {
 
         @JsonProperty("URL")
@@ -130,18 +139,21 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class SampleImageUrl {
 
         private SampleS sampleS;
     }
 
     @Data
+    @NoArgsConstructor
     public static class SampleS {
 
         private String[] image;
     }
 
     @Data
+    @NoArgsConstructor
     public static class SampleMovieUrl {
 
         @JsonProperty("size_476_306")
@@ -162,6 +174,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Prices {
 
         private String price;
@@ -172,12 +185,14 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Deliveries {
 
         private List<Delivery> delivery;
     }
 
     @Data
+    @NoArgsConstructor
     public static class Delivery {
 
         private String type;
@@ -188,6 +203,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class ItemInfo {
 
         private List<Genre> genre;
@@ -214,6 +230,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Genre {
 
         private String id;
@@ -222,6 +239,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Series {
 
         private String id;
@@ -230,6 +248,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Maker {
 
         private String id;
@@ -238,6 +257,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Actor {
 
         private String id;
@@ -246,6 +266,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Actress {
 
         private String id;
@@ -254,6 +275,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Director {
 
         private String id;
@@ -262,6 +284,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Author {
 
         private String id;
@@ -270,6 +293,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Label {
 
         private String id;
@@ -278,6 +302,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Type {
 
         private String id;
@@ -286,6 +311,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Color {
 
         private String id;
@@ -294,6 +320,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Size {
 
         private String id;
@@ -302,6 +329,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class BandaiInfo {
 
         @JsonProperty("titlecode")
@@ -309,6 +337,7 @@ public class ItemListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class CdInfo {
 
         private String kind;

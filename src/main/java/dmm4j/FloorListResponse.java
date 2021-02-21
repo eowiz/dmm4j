@@ -5,6 +5,7 @@ import lombok.*;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class FloorListResponse {
 
     private FloorListRequest request;
@@ -12,18 +13,21 @@ public class FloorListResponse {
     private FloorListResult result;
 
     @Data
+    @NoArgsConstructor
     public static class FloorListRequest {
 
         private FloorListParameters parameters;
     }
 
     @Data
+    @NoArgsConstructor
     public static class FloorListResult {
 
         private List<Site> site;
     }
 
     @Data
+    @NoArgsConstructor
     public static class Site {
 
         private String name;
@@ -34,6 +38,7 @@ public class FloorListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Service {
 
         private String name;
@@ -44,6 +49,7 @@ public class FloorListResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Floor {
 
         private String id;

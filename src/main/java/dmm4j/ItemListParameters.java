@@ -5,8 +5,10 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemListParameters {
 
     @NonNull

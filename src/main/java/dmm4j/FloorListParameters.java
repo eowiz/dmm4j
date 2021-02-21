@@ -2,8 +2,10 @@ package dmm4j;
 
 import lombok.*;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class FloorListParameters {
 
     @NonNull
