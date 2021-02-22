@@ -11,10 +11,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ItemListParameters {
 
-    @NonNull
     String apiId;
 
-    @NonNull
     String affiliateId;
 
     @NonNull

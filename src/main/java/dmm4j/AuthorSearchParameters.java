@@ -8,10 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 public class AuthorSearchParameters {
 
-    @NonNull
     String apiId;
 
-    @NonNull
     String affiliateId;
 
     @NonNull

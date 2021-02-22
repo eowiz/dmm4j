@@ -8,10 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 public class SeriesSearchParameters {
 
-    @NonNull
     String apiId;
 
-    @NonNull
     String affiliateId;
 
     @NonNull
