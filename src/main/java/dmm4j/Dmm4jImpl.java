@@ -24,6 +24,10 @@ public class Dmm4jImpl implements Dmm4j {
 
     private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
 
+    private String apiId;
+
+    private String affiliateId;
+
     Dmm4jImpl() {
         var objectMapper = new ObjectMapper();
         objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
@@ -33,11 +37,20 @@ public class Dmm4jImpl implements Dmm4j {
         Unirest.config().setObjectMapper(jacksonObjectMapper);
     }
 
+    Dmm4jImpl(String apiId, String affiliateId) {
+        this();
+
+        this.apiId = apiId;
+        this.affiliateId = affiliateId;
+    }
+
     @Override
     public ItemListResponse getItemList(ItemListParameters parameters) {
         Stream<Map.Entry<String, String>> params = Stream.of(
-                Map.entry("api_id", Optional.ofNullable(parameters.getApiId())),
-                Map.entry("affiliate_id", Optional.ofNullable(parameters.getAffiliateId())),
+                Map.entry("api_id", Optional.ofNullable(parameters.getApiId())
+                        .or(() -> Optional.ofNullable(this.apiId))),
+                Map.entry("affiliate_id", Optional.ofNullable(parameters.getAffiliateId())
+                        .or(() -> Optional.ofNullable(this.affiliateId))),
                 Map.entry("site", Optional.ofNullable(parameters.getSite())
                         .map(Site::getValue)),
                 Map.entry("service", Optional.ofNullable(parameters.getService())),
@@ -67,7 +80,6 @@ public class Dmm4jImpl implements Dmm4j {
                 .filter(entry -> entry.getValue().isPresent())
                 .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
 
-
         return Unirest.get(BASE_URL + "/ItemList")
                 .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
                 .asObject(ItemListResponse.class)
@@ -77,8 +89,10 @@ public class Dmm4jImpl implements Dmm4j {
     @Override
     public FloorListResponse getFloorList(FloorListParameters parameters) {
         Stream<Map.Entry<String, String>> params = Stream.of(
-                Map.entry("api_id", Optional.ofNullable(parameters.getApiId())),
-                Map.entry("affiliate_id", Optional.ofNullable(parameters.getAffiliateId())),
+                Map.entry("api_id", Optional.ofNullable(parameters.getApiId())
+                        .or(() -> Optional.ofNullable(this.apiId))),
+                Map.entry("affiliate_id", Optional.ofNullable(parameters.getAffiliateId())
+                        .or(() -> Optional.ofNullable(this.affiliateId))),
                 Map.entry("callback", Optional.ofNullable(parameters.getCallback()))
         )
                 .filter(entry -> entry.getValue().isPresent())
@@ -93,8 +107,10 @@ public class Dmm4jImpl implements Dmm4j {
     @Override
     public ActressSearchResponse getActressSearch(ActressSearchParameters parameters) {
         Stream<Map.Entry<String, String>> params = Stream.of(
-                Map.entry("api_id", Optional.ofNullable(parameters.getApiId())),
-                Map.entry("affiliate_id", Optional.ofNullable(parameters.getAffiliateId())),
+                Map.entry("api_id", Optional.ofNullable(parameters.getApiId())
+                        .or(() -> Optional.ofNullable(this.apiId))),
+                Map.entry("affiliate_id", Optional.ofNullable(parameters.getAffiliateId())
+                        .or(() -> Optional.ofNullable(this.affiliateId))),
                 Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
                 Map.entry("actress_id", Optional.ofNullable(parameters.getActressId())),
                 Map.entry("keyword", Optional.ofNullable(parameters.getKeyword())),
@@ -139,8 +155,10 @@ public class Dmm4jImpl implements Dmm4j {
     @Override
     public GenreSearchResponse getGenreSearch(SeriesSearchParameters parameters) {
         Stream<Map.Entry<String, String>> params = Stream.of(
-                Map.entry("api_id", Optional.ofNullable(parameters.getApiId())),
-                Map.entry("affiliate_id", Optional.ofNullable(parameters.getAffiliateId())),
+                Map.entry("api_id", Optional.ofNullable(parameters.getApiId())
+                        .or(() -> Optional.ofNullable(this.apiId))),
+                Map.entry("affiliate_id", Optional.ofNullable(parameters.getAffiliateId())
+                        .or(() -> Optional.ofNullable(this.affiliateId))),
                 Map.entry("floor_id", Optional.ofNullable(parameters.getFloorId())),
                 Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
                 Map.entry("hits", Optional.ofNullable(parameters.getHits())
@@ -162,8 +180,10 @@ public class Dmm4jImpl implements Dmm4j {
     @Override
     public MakerSearchResponse getMakerSearch(MakerSearchParameters parameters) {
         Stream<Map.Entry<String, String>> params = Stream.of(
-                Map.entry("api_id", Optional.ofNullable(parameters.getApiId())),
-                Map.entry("affiliate_id", Optional.ofNullable(parameters.getAffiliateId())),
+                Map.entry("api_id", Optional.ofNullable(parameters.getApiId())
+                        .or(() -> Optional.ofNullable(this.apiId))),
+                Map.entry("affiliate_id", Optional.ofNullable(parameters.getAffiliateId())
+                        .or(() -> Optional.ofNullable(this.affiliateId))),
                 Map.entry("floor_id", Optional.ofNullable(parameters.getFloorId())),
                 Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
                 Map.entry("hits", Optional.ofNullable(parameters.getHits())
@@ -185,8 +205,10 @@ public class Dmm4jImpl implements Dmm4j {
     @Override
     public SeriesSearchResponse getSeriesSearch(SeriesSearchParameters parameters) {
         Stream<Map.Entry<String, String>> params = Stream.of(
-                Map.entry("api_id", Optional.ofNullable(parameters.getApiId())),
-                Map.entry("affiliate_id", Optional.ofNullable(parameters.getAffiliateId())),
+                Map.entry("api_id", Optional.ofNullable(parameters.getApiId())
+                        .or(() -> Optional.ofNullable(this.apiId))),
+                Map.entry("affiliate_id", Optional.ofNullable(parameters.getAffiliateId())
+                        .or(() -> Optional.ofNullable(this.affiliateId))),
                 Map.entry("floor_id", Optional.ofNullable(parameters.getFloorId())),
                 Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
                 Map.entry("hits", Optional.ofNullable(parameters.getHits())
@@ -208,8 +230,10 @@ public class Dmm4jImpl implements Dmm4j {
     @Override
     public AuthorSearchResponse getAuthorSearch(AuthorSearchParameters parameters) {
         Stream<Map.Entry<String, String>> params = Stream.of(
-                Map.entry("api_id", Optional.ofNullable(parameters.getApiId())),
-                Map.entry("affiliate_id", Optional.ofNullable(parameters.getAffiliateId())),
+                Map.entry("api_id", Optional.ofNullable(parameters.getApiId())
+                        .or(() -> Optional.ofNullable(this.apiId))),
+                Map.entry("affiliate_id", Optional.ofNullable(parameters.getAffiliateId())
+                        .or(() -> Optional.ofNullable(this.affiliateId))),
                 Map.entry("floor_id", Optional.ofNullable(parameters.getFloorId())),
                 Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
                 Map.entry("hits", Optional.ofNullable(parameters.getHits())

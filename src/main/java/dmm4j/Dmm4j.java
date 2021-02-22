@@ -19,4 +19,8 @@ public interface Dmm4j {
     static Dmm4j getInstance() {
         return Dmm4jImpl.INSTANCE;
     }
+
+    static Dmm4j getInstance(String apiId, String affiliateId) {
+        return new Dmm4jImpl(apiId, affiliateId);
+    }
 }
