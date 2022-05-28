@@ -1,7 +1,9 @@
 package dmm4j;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -57,7 +59,8 @@ public class ActressSearchResponse {
 
         private Integer height;
 
-        @JsonDeserialize(using = LocalDateDeserializer.class)
+        @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+        @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate birthday;
 
         private String bloodType;

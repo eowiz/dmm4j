@@ -1,7 +1,9 @@
 package dmm4j;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -39,9 +41,11 @@ public class ActressSearchParameters {
     Integer lteHeight;
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDate gteBirthday;
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDate lteBirthday;
 
     Integer hits;
