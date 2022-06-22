@@ -1,18 +1,25 @@
 package dmm4j;
 
-import lombok.*;
+import javax.annotation.Nullable;
+import lombok.Builder;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+/** DMM.com フロアAPI リクエストパラメータ. */
+@Jacksonized
+@Value
+@Builder(toBuilder = true)
 public class FloorListParameters {
 
-    String apiId;
+  /** API ID. */
+  @Nullable String apiId;
 
-    String affiliateId;
+  /** アフィリエイトID. */
+  @Nullable String affiliateId;
 
-    String output;
+  /** 出力形式. */
+  @Nullable String output;
 
-    String callback;
+  /** コールバック. */
+  @Nullable String callback;
 }

@@ -1,62 +1,92 @@
 package dmm4j;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.List;
+import javax.annotation.Nonnull;
+import lombok.Builder;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
-@NoArgsConstructor
+/** DMM.com ジャンル検索API レスポンス. */
+@Jacksonized
+@Value
+@Builder(toBuilder = true)
 public class GenreSearchResponse {
 
-    private GenreSearchRequest request;
+  /** リクエストパラメータ. */
+  @Nonnull GenreSearchRequest request;
 
-    private GenreSearchResult result;
+  /** レスポンスフィールド. */
+  @Nonnull GenreSearchResult result;
 
-    @Data
-    @NoArgsConstructor
-    public static class GenreSearchRequest {
+  /** リクエストパラメータ. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class GenreSearchRequest {
 
-        private SeriesSearchParameters parameters;
-    }
+    /** リクエストパラメータ. */
+    @Nonnull SeriesSearchParameters parameters;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class GenreSearchResult {
+  /** レスポンスフィールド. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class GenreSearchResult {
 
-        private String status;
+    /** ステータスコード. */
+    @Nonnull String status;
 
-        private int resultCount;
+    /** 取得件数. */
+    int resultCount;
 
-        private int totalCount;
+    /** 全体件数. */
+    int totalCount;
 
-        private int firstPosition;
+    /** 検索開始位置. */
+    int firstPosition;
 
-        private String siteName;
+    /** サイト名. */
+    @Nonnull String siteName;
 
-        private String siteCode;
+    /** サイトコード. */
+    @Nonnull String siteCode;
 
-        private String serviceName;
+    /** サービス名. */
+    @Nonnull String serviceName;
 
-        private String serviceCode;
+    /** サービスコード. */
+    @Nonnull String serviceCode;
 
-        private String floorId;
+    /** フロアID. */
+    @Nonnull String floorId;
 
-        private String floorName;
+    /** フロア名. */
+    @Nonnull String floorName;
 
-        private String floorCode;
+    /** フロアコード. */
+    @Nonnull String floorCode;
 
-        private Genre genre;
-    }
+    /** ジャンル情報リスト. */
+    @Nonnull List<Genre> genre;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class Genre {
+  /** ジャンル情報. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Genre {
 
-        private String genreId;
+    /** ジャンルID. */
+    @Nonnull String genreId;
 
-        private String name;
+    /** ジャンル名. */
+    @Nonnull String name;
 
-        private String ruby;
+    /** ジャンル名 (読み仮名). */
+    String ruby;
 
-        private String listUrl;
-    }
+    /** リストページURL（アフィリエイトID付き）. */
+    String listUrl;
+  }
 }

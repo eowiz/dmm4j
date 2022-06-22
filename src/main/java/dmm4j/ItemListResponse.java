@@ -4,345 +4,490 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import lombok.Builder;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
-@NoArgsConstructor
+/** DMM.com 商品検索API ver3 レスポンス. */
+@Jacksonized
+@Value
+@Builder(toBuilder = true)
 public class ItemListResponse {
 
-    private ItemListRequest request;
+  /** リクエストパラメータ. */
+  @Nonnull ItemListRequest request;
 
-    private ItemListResult result;
+  /** レスポンスフィールド. */
+  @Nonnull ItemListResult result;
 
-    @Data
-    @NoArgsConstructor
-    public static class ItemListRequest {
+  /** リクエストパラメータ. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class ItemListRequest {
 
-        private ItemListParameters parameters;
-    }
+    /** リクエストパラメータ. */
+    @Nonnull ItemListParameters parameters;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class ItemListResult {
+  /** レスポンスフィールド. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class ItemListResult {
 
-        private String status;
+    /** ステータスコード. */
+    @Nonnull String status;
 
-        private int resultCount;
+    /** 取得件数. */
+    int resultCount;
 
-        private int totalCount;
+    /** 全体件数. */
+    int totalCount;
 
-        private int firstPosition;
+    /** 検索開始位置. */
+    int firstPosition;
 
-        private List<Item> items;
-    }
+    /** 商品情報リスト. */
+    @Nonnull List<Item> items;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class Item {
+  /** 商品情報. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Item {
 
-        private String serviceCode;
+    /** サービスコード. */
+    @Nonnull String serviceCode;
 
-        private String serviceName;
+    /** サービス名. */
+    @Nonnull String serviceName;
 
-        private String floorCode;
+    /** フロアコード. */
+    @Nonnull String floorCode;
 
-        private String floorName;
+    /** フロア名. */
+    @Nonnull String floorName;
 
-        private String categoryName;
+    /** カテゴリ名. */
+    @Nonnull String categoryName;
 
-        private String contentId;
+    /** 商品ID. */
+    @Nonnull String contentId;
 
-        private String productId;
+    /** 品番. */
+    @Nonnull String productId;
 
-        private String title;
+    /** タイトル. */
+    @Nonnull String title;
 
-        private String volume;
+    /** 収録時間 or ページ数. */
+    String volume;
 
-        private String number;
+    /** 巻数. */
+    String number;
 
-        private Review review;
+    /** レビュー. */
+    Review review;
 
-        @JsonProperty("URL")
-        private String url;
+    /** 商品ページURL. */
+    @JsonProperty("URL")
+    String url;
 
-        @JsonProperty("affiliateURL")
-        private String affiliateUrl;
+    /** アフィリエイトリンクURL. */
+    @JsonProperty("affiliateURL")
+    String affiliateUrl;
 
-        @JsonProperty("URLsp")
-        private String urlSp;
+    /** スマホ向け商品ページURL. */
+    @JsonProperty("URLsp")
+    String urlSp;
 
-        @JsonProperty("affiliateURLsp")
-        private String affiliateUrlSp;
+    /** スマホ向けアフィリエイトリンクURL. */
+    @JsonProperty("affiliateURLsp")
+    String affiliateUrlSp;
 
-        @JsonProperty("imageURL")
-        private ImageUrl imageUrl;
+    /** 画像URL. */
+    @Nonnull
+    @JsonProperty("imageURL")
+    ImageUrl imageUrl;
+
+    /** 立ち読みページURL. */
+    @Nullable Tachiyomi tachiyomi;
 
-        private Tachiyomi tachiyomi;
-
-        @JsonProperty("sampleImageURL")
-        private SampleImageUrl sampleImageUrl;
-
-        @JsonProperty("sampleMovieURL")
-        private SampleMovieUrl sampleMovieUrl;
-
-        private Prices prices;
-
-        @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        private LocalDateTime date;
-
-        @JsonProperty("iteminfo")
-        private ItemInfo itemInfo;
-
-        @JsonProperty("cdinfo")
-        private CdInfo cdInfo;
-
-        @JsonProperty("bandaiinfo")
-        private BandaiInfo BandaiInfo;
-
-        private String isbn;
-
-        @JsonProperty("jancode")
-        private String janCode;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Review {
-
-        private int count;
-
-        private double average;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class ImageUrl {
-
-        private String list;
-
-        private String small;
-
-        private String large;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Tachiyomi {
-
-        @JsonProperty("URL")
-        private String url;
-
-        @JsonProperty("affiliateURL")
-        private String affiliateUrl;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class SampleImageUrl {
-
-        private SampleS sampleS;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class SampleS {
-
-        private String[] image;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class SampleMovieUrl {
-
-        @JsonProperty("size_476_306")
-        private String size476x306;
-
-        @JsonProperty("size_560_360")
-        private String size560x360;
-
-        @JsonProperty("size_644_414")
-        private String size644x414;
-
-        @JsonProperty("size_720_480")
-        private String size720x480;
-
-        private int pcFlag;
-
-        private int spFlag;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Prices {
-
-        private String price;
-
-        private String listPrice;
-
-        private Deliveries deliveries;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Deliveries {
-
-        private List<Delivery> delivery;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Delivery {
-
-        private String type;
-
-        private String price;
-
-        private String listPrice;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class ItemInfo {
-
-        private List<Genre> genre;
-
-        private List<Series> series;
-
-        private List<Maker> maker;
-
-        private List<Actor> actor;
-
-        private List<Actress> actress;
-
-        private List<Director> director;
-
-        private List<Author> author;
-
-        private List<Label> label;
-
-        private List<Type> type;
-
-        private List<Color> color;
-
-        private List<Size> size;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Genre {
-
-        private String id;
-
-        private String name;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Series {
-
-        private String id;
-
-        private String name;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Maker {
-
-        private String id;
-
-        private String name;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Actor {
-
-        private String id;
-
-        private String name;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Actress {
-
-        private String id;
-
-        private String name;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Director {
-
-        private String id;
-
-        private String name;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Author {
-
-        private String id;
-
-        private String name;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Label {
-
-        private String id;
-
-        private String name;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Type {
-
-        private String id;
-
-        private String name;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Color {
-
-        private String id;
-
-        private String name;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class Size {
-
-        private String id;
-
-        private String name;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class BandaiInfo {
-
-        @JsonProperty("titlecode")
-        private String titleCode;
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class CdInfo {
-
-        private String kind;
-    }
+    /** サンプル画像URL. */
+    @Nullable
+    @JsonProperty("sampleImageURL")
+    SampleImageUrl sampleImageUrl;
+
+    /** サンプル動画URL. */
+    @Nullable
+    @JsonProperty("sampleMovieURL")
+    SampleMovieUrl sampleMovieUrl;
+
+    /** 価格. */
+    @Nonnull Prices prices;
+
+    /** 発売日、配信開始日、貸出開始日. */
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime date;
+
+    /** 商品詳細. */
+    @JsonProperty("iteminfo")
+    ItemInfo itemInfo;
+
+    /** CD情報. */
+    @JsonProperty("cdinfo")
+    CdInfo cdInfo;
+
+    @Nullable
+    @JsonProperty("bandaiinfo")
+    BandaiInfo bandaiInfo;
+
+    /** ISBN. */
+    String isbn;
+
+    /** JANコード. */
+    @JsonProperty("jancode")
+    String janCode;
+  }
+
+  /** レビュー. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Review {
+
+    /** レビュー数. */
+    int count;
+
+    /** レビュー平均点. */
+    double average;
+  }
+
+  /** 画像URL. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class ImageUrl {
+
+    /** リストページ用. */
+    String list;
+
+    /** 末端用（小）. */
+    String small;
+
+    /** 末端用（大）. */
+    String large;
+  }
+
+  /** 立ち読みページ. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Tachiyomi {
+
+    /** 立ち読みページURL. */
+    @JsonProperty("URL")
+    String url;
+
+    /** 立ち読みアフィリエイトリンクURL. */
+    @JsonProperty("affiliateURL")
+    String affiliateUrl;
+  }
+
+  /** サンプル画像URL. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class SampleImageUrl {
+
+    /** サンプル画像URL. */
+    @Nonnull SampleS sampleS;
+  }
+
+  /** サンプル（小）リスト. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class SampleS {
+
+    /** サンプル画像（小）. */
+    @Nonnull String[] image;
+  }
+
+  /** サンプル動画URL. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class SampleMovieUrl {
+
+    /** 476x306. */
+    @JsonProperty("size_476_306")
+    String size476x306;
+
+    /** 560x360. */
+    @JsonProperty("size_560_360")
+    String size560x360;
+
+    /** 644x414. */
+    @JsonProperty("size_644_414")
+    String size644x414;
+
+    /** 720x480. */
+    @JsonProperty("size_720_480")
+    String size720x480;
+
+    /** PC対応しているか. */
+    int pcFlag;
+
+    /** SP対応しているか. */
+    int spFlag;
+  }
+
+  /** 価格. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Prices {
+
+    /** 金額. */
+    String price;
+
+    /** 定価. */
+    String listPrice;
+
+    /** 配信リスト. */
+    Deliveries deliveries;
+  }
+
+  /** 配信リスト. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Deliveries {
+
+    /** 配信. */
+    @Nonnull List<Delivery> delivery;
+  }
+
+  /** 配信. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Delivery {
+
+    /** 配信タイプ. */
+    String type;
+
+    /** 配信価格. */
+    String price;
+  }
+
+  /** 商品詳細. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class ItemInfo {
+
+    /** ジャンル. */
+    List<Genre> genre;
+
+    /** シリーズ. */
+    List<Series> series;
+
+    /** メーカー. */
+    List<Maker> maker;
+
+    /** 出演者（一般作品のみ）. */
+    List<Actor> actor;
+
+    /** 女優（アダルト作品のみ）. */
+    List<Actress> actress;
+
+    /** 監督. */
+    List<Director> director;
+
+    /** 作家、原作者、著者. */
+    List<Author> author;
+
+    /** レーベル. */
+    List<Label> label;
+
+    /** タイプ. */
+    List<Type> type;
+
+    /** カラー. */
+    List<Color> color;
+
+    /** サイズ. */
+    List<Size> size;
+  }
+
+  /** ジャンル. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Genre {
+
+    /** ジャンルID. */
+    @Nonnull String id;
+
+    /** ジャンル名. */
+    @Nonnull String name;
+  }
+
+  /** シリーズ. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Series {
+
+    /** シリーズID. */
+    @Nonnull String id;
+
+    /** シリーズ名. */
+    @Nonnull String name;
+  }
+
+  /** メーカー. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Maker {
+
+    /** メーカーID. */
+    @Nonnull String id;
+
+    /** メーカー名. */
+    @Nonnull String name;
+  }
+
+  /** 出演者. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Actor {
+
+    /** 出演者ID. */
+    @Nonnull String id;
+
+    /** 出演者名. */
+    @Nonnull String name;
+  }
+
+  /** 女優. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Actress {
+
+    /** 女優ID. */
+    @Nonnull String id;
+
+    /** 女優名. */
+    @Nonnull String name;
+  }
+
+  /** 監督. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Director {
+
+    /** 監督ID. */
+    @Nonnull String id;
+
+    /** 監督名. */
+    @Nonnull String name;
+  }
+
+  /** 作家、原作者、著者. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Author {
+
+    /** 作家、原作者、著者ID. */
+    @Nonnull String id;
+
+    /** 作家、原作者、著者名. */
+    @Nonnull String name;
+  }
+
+  /** レーベル. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Label {
+
+    /** レーベルID. */
+    @Nonnull String id;
+
+    /** レーベル名. */
+    @Nonnull String name;
+  }
+
+  /** タイプ. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Type {
+
+    /** タイプID. */
+    @Nonnull String id;
+
+    /** タイプ名. */
+    @Nonnull String name;
+  }
+
+  /** カラー. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Color {
+
+    /** カラーID. */
+    @Nonnull String id;
+
+    /** カラー名. */
+    @Nonnull String name;
+  }
+
+  /** サイズ. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Size {
+
+    /** サイズID. */
+    @Nonnull String id;
+
+    /** サイズ名. */
+    @Nonnull String name;
+  }
+
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class BandaiInfo {
+
+    @JsonProperty("titlecode")
+    String titleCode;
+  }
+
+  /** CD情報. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class CdInfo {
+
+    /** アルバム、シングル. */
+    String kind;
+  }
 }

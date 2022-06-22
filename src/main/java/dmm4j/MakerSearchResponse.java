@@ -1,64 +1,92 @@
 package dmm4j;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.List;
+import javax.annotation.Nonnull;
+import lombok.Builder;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
-@NoArgsConstructor
+/** DMM.com メーカー検索API. */
+@Jacksonized
+@Value
+@Builder(toBuilder = true)
 public class MakerSearchResponse {
 
-    private MakerSearchRequest request;
+  /** リクエストパラメータ. */
+  @Nonnull MakerSearchRequest request;
 
-    private MakerSearchResult result;
+  /** レスポンスフィールド. */
+  @Nonnull MakerSearchResult result;
 
-    @Data
-    @NoArgsConstructor
-    public static class MakerSearchRequest {
+  /** リクエストパラメータ. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class MakerSearchRequest {
 
-        private MakerSearchParameters parameters;
-    }
+    /** リクエストパラメータ. */
+    @Nonnull MakerSearchParameters parameters;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class MakerSearchResult {
+  /** レスポンスフィールド. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class MakerSearchResult {
 
-        private String status;
+    /** ステータスコード. */
+    @Nonnull String status;
 
-        private Integer resultCount;
+    /** 取得件数. */
+    @Nonnull Integer resultCount;
 
-        private Integer totalCount;
+    /** 全体件数. */
+    @Nonnull Integer totalCount;
 
-        private Integer firstPosition;
+    /** 検索開始位置. */
+    @Nonnull Integer firstPosition;
 
-        private String siteName;
+    /** サイト名. */
+    @Nonnull String siteName;
 
-        private String siteCode;
+    /** サイトコード. */
+    @Nonnull String siteCode;
 
-        private String serviceName;
+    /** サービス名. */
+    @Nonnull String serviceName;
 
-        private String serviceCode;
+    /** サービスコード. */
+    @Nonnull String serviceCode;
 
-        private String floorId;
+    /** フロアID. */
+    @Nonnull String floorId;
 
-        private String floorName;
+    /** フロア名. */
+    @Nonnull String floorName;
 
-        private String floorCode;
+    /** フロアコード. */
+    @Nonnull String floorCode;
 
-        private List<Maker> maker;
-    }
+    /** メーカー情報. */
+    @Nonnull List<Maker> maker;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class Maker {
+  /** メーカー情報. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Maker {
 
-        private String makerId;
+    /** メーカーID. */
+    @Nonnull String makerId;
 
-        private String name;
+    /** メーカー名. */
+    @Nonnull String name;
 
-        private String ruby;
+    /** メーカー名（読み仮名）. */
+    String ruby;
 
-        private String listUrl;
-    }
+    /** リストページURL（アフィリエイトID付き）. */
+    String listUrl;
+  }
 }

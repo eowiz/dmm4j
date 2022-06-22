@@ -1,62 +1,91 @@
 package dmm4j;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.annotation.Nonnull;
+import lombok.Builder;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
-@NoArgsConstructor
+/** DMM.com シリーズ検索API レスポンス. */
+@Jacksonized
+@Value
+@Builder(toBuilder = true)
 public class SeriesSearchResponse {
 
-    private SeriesSearchRequest request;
+  /** リケストパラメータ. */
+  @Nonnull SeriesSearchRequest request;
 
-    private SeriesSearchResult result;
+  /** レスポンスフィールド. */
+  @Nonnull SeriesSearchResult result;
 
-    @Data
-    @NoArgsConstructor
-    public static class SeriesSearchRequest {
+  /** リクエストパラメータ. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class SeriesSearchRequest {
 
-        private SeriesSearchParameters parameters;
-    }
+    /** リクエストパラメータ. */
+    @Nonnull SeriesSearchParameters parameters;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class SeriesSearchResult {
+  /** レスポンスフィールド. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class SeriesSearchResult {
 
-        private String status;
+    /** ステータスコード. */
+    @Nonnull String status;
 
-        private int resultCount;
+    /** 取得件数. */
+    int resultCount;
 
-        private int totalCount;
+    /** 全体件数. */
+    int totalCount;
 
-        private int firstPosition;
+    /** 検索開始位置. */
+    int firstPosition;
 
-        private String siteName;
+    /** サイト名. */
+    @Nonnull String siteName;
 
-        private String siteCode;
+    /** サイトコード. */
+    @Nonnull String siteCode;
 
-        private String serviceName;
+    /** サービス名. */
+    @Nonnull String serviceName;
 
-        private String serviceCode;
+    /** サービスコード. */
+    @Nonnull String serviceCode;
 
-        private String floorId;
+    /** フロアID. */
+    @Nonnull String floorId;
 
-        private String floorName;
+    /** フロア名. */
+    @Nonnull String floorName;
 
-        private String floorCode;
+    /** フロアコード. */
+    @Nonnull String floorCode;
 
-        private Series series;
-    }
+    /** シリーズ情報. */
+    @Nonnull Series series;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class Series {
+  /** シリーズ情報. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Series {
 
-        private String seriesId;
+    /** シリーズID. */
+    @Nonnull String seriesId;
 
-        private String name;
+    /** シリーズ名. */
+    @Nonnull String name;
 
-        private String ruby;
+    /** シリーズ名（読み仮名）. */
+    String ruby;
 
-        private String listUrl;
-    }
+    /** リストページURL（アフィリエイトID付き）. */
+    String listUrl;
+  }
 }

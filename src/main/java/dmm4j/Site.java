@@ -1,15 +1,22 @@
 package dmm4j;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import javax.annotation.Nonnull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
+/** サイト. */
 @RequiredArgsConstructor
 public enum Site {
-    FANZA("FANZA"),
-    DMM("DMM");
 
-    @JsonValue
-    private final String value;
+  /** FANZA（アダルト）. */
+  FANZA("FANZA"),
+
+  /** DMM.com（一般）. */
+  DMM("DMM");
+
+  /** サイト. */
+  @Nonnull
+  @Getter(onMethod = @__(@JsonValue))
+  private final String value;
 }

@@ -1,64 +1,95 @@
 package dmm4j;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.List;
+import javax.annotation.Nonnull;
+import lombok.Builder;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
-@NoArgsConstructor
+/** DMM.com 作者検索API レスポンス. */
+@Jacksonized
+@Value
+@Builder(toBuilder = true)
 public class AuthorSearchResponse {
 
-    private AuthorSearchRequest request;
+  /** リクエストパラメータ. */
+  @Nonnull AuthorSearchRequest request;
 
-    private AuthorSearchResult result;
+  /** レスポンスフィールド. */
+  @Nonnull AuthorSearchResult result;
 
-    @Data
-    @NoArgsConstructor
-    public static class AuthorSearchRequest {
+  /** リクエストパラメータ. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class AuthorSearchRequest {
 
-        private AuthorSearchParameters parameters;
-    }
+    /** リクエストパラメータ. */
+    @Nonnull AuthorSearchParameters parameters;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class AuthorSearchResult {
+  /** レスポンスフィールド. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class AuthorSearchResult {
 
-        private String status;
+    /** ステータスコード. */
+    @Nonnull String status;
 
-        private int resultCount;
+    /** 取得件数. */
+    int resultCount;
 
-        private int totalCount;
+    /** 全体件数. */
+    int totalCount;
 
-        private int firstPosition;
+    /** 検索開始位置. */
+    int firstPosition;
 
-        private String siteName;
+    /** サイト名. */
+    @Nonnull String siteName;
 
-        private String siteCode;
+    /** サイトコード. */
+    @Nonnull String siteCode;
 
-        private String serviceName;
+    /** サービス名. */
+    @Nonnull String serviceName;
 
-        private String serviceCode;
+    /** サービスコード. */
+    @Nonnull String serviceCode;
 
-        private String floorId;
+    /** フロアID. */
+    @Nonnull String floorId;
 
-        private String floorName;
+    /** フロア名. */
+    @Nonnull String floorName;
 
-        private String floorCode;
+    /** フロアコード. */
+    @Nonnull String floorCode;
 
-        private Author author;
-    }
+    /** 作者情報リスト. */
+    @Nonnull List<Author> author;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class Author {
+  /** 作者情報. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Author {
 
-        private String authorId;
+    /** 作者ID. */
+    @Nonnull String authorId;
 
-        private String name;
+    /** 作者名. */
+    @Nonnull String name;
 
-        private String ruby;
+    /** 作者名（読み仮名）. */
+    String ruby;
 
-        private String authorName;
+    /** 作者別名. */
+    String authorName;
 
-        private String listUrl;
-    }
+    /** リストページURL（アフィリエイトID付き）. */
+    String listUrl;
+  }
 }

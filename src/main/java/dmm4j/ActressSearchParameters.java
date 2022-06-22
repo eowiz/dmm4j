@@ -3,80 +3,137 @@ package dmm4j;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import lombok.*;
-
 import java.time.LocalDate;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+/** DMM.com 女優API リクエストパラメータ. */
+@Jacksonized
+@Value
+@Builder(toBuilder = true)
 public class ActressSearchParameters {
 
-    String apiId;
+  /** API ID. */
+  @Nullable String apiId;
 
-    String affiliateId;
+  /** アフィリエイトID. */
+  @Nullable String affiliateId;
 
-    String initial;
+  /** 頭文字 (50音). */
+  @Nullable String initial;
 
-    String actressId;
+  /** 女優ID. */
+  @Nullable String actressId;
 
-    String keyword;
+  /** キーワード. */
+  @Nullable String keyword;
 
-    Integer gteBust;
+  /** バスト. */
+  @Nullable Integer gteBust;
 
-    Integer lteBust;
+  /** バスト. */
+  @Nullable Integer lteBust;
 
-    Integer gteWaist;
+  /** ウエスト. */
+  @Nullable Integer gteWaist;
 
-    Integer lteWaist;
+  /** ウエスト. */
+  @Nullable Integer lteWaist;
 
-    Integer gteHip;
+  /** ヒップ. */
+  @Nullable Integer gteHip;
 
-    Integer lteHip;
+  /** ヒップ. */
+  @Nullable Integer lteHip;
 
-    Integer gteHeight;
+  /** 身長. */
+  @Nullable Integer gteHeight;
 
-    Integer lteHeight;
+  /** 身長. */
+  @Nullable Integer lteHeight;
 
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDate gteBirthday;
+  /** 誕生日. */
+  @Nullable
+  @JsonDeserialize(using = LocalDateDeserializer.class)
+  @JsonFormat(pattern = "uuuu-MM-dd")
+  LocalDate gteBirthday;
 
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDate lteBirthday;
+  /** 誕生日. */
+  @Nullable
+  @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  LocalDate lteBirthday;
 
-    Integer hits;
+  /** 取得件数. */
+  @Nullable Integer hits;
 
-    Integer offset;
+  /** 検索開始位置. */
+  @Nullable Integer offset;
 
-    Sort sort;
+  /** ソート順. */
+  @Nullable Sort sort;
 
-    String output;
+  /** 出力形式. */
+  @Nullable String output;
 
-    String callback;
+  /** コールバック. */
+  @Nullable String callback;
 
-    @Getter
-    @RequiredArgsConstructor
-    public enum Sort {
-        NAME_ASC("name"),
-        NAME_DESC("-name"),
-        BUST_ASC("bust"),
-        BUST_DESC("-bust"),
-        WAIST_ASC("waist"),
-        WAIST_DESC("-waist"),
-        HIP_ASC("hip"),
-        HIP_DESC("-hip"),
-        HEIGHT_ASC("height"),
-        HEIGHT_DESC("-height"),
-        BIRTHDAY_ASC("birthday"),
-        BIRTHDAY_DESC("-birthday"),
-        ID_ASC("id"),
-        ID_DESC("-id");
+  /** ソート順. */
+  @RequiredArgsConstructor
+  public enum Sort {
 
-        @JsonValue
-        private final String value;
-    }
+    /** 名前昇順. */
+    NAME_ASC("name"),
+
+    /** 名前降順. */
+    NAME_DESC("-name"),
+
+    /** バスト昇順. */
+    BUST_ASC("bust"),
+
+    /** バスト降順. */
+    BUST_DESC("-bust"),
+
+    /** ウエスト昇順. */
+    WAIST_ASC("waist"),
+
+    /** ウエスト降順. */
+    WAIST_DESC("-waist"),
+
+    /** ヒップ昇順. */
+    HIP_ASC("hip"),
+
+    /** ヒップ降順. */
+    HIP_DESC("-hip"),
+
+    /** 身長昇順. */
+    HEIGHT_ASC("height"),
+
+    /** 身長降順. */
+    HEIGHT_DESC("-height"),
+
+    /** 生年月日昇順. */
+    BIRTHDAY_ASC("birthday"),
+
+    /** 生年月日降順. */
+    BIRTHDAY_DESC("-birthday"),
+
+    /** 女優ID昇順. */
+    ID_ASC("id"),
+
+    /** 女優ID降順. */
+    ID_DESC("-id");
+
+    @Nonnull
+    @Getter(onMethod = @__(@JsonValue))
+    private final String value;
+  }
 }

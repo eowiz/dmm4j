@@ -1,61 +1,88 @@
 package dmm4j;
 
-import lombok.*;
-
 import java.util.List;
+import javax.annotation.Nonnull;
+import lombok.Builder;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
-@NoArgsConstructor
+/** DMM.com フロアAPI レスポンス. */
+@Jacksonized
+@Value
+@Builder(toBuilder = true)
 public class FloorListResponse {
 
-    private FloorListRequest request;
+  /** リクエストパラメータ. */
+  @Nonnull FloorListRequest request;
 
-    private FloorListResult result;
+  /** レスポンスフィールド. */
+  @Nonnull FloorListResult result;
 
-    @Data
-    @NoArgsConstructor
-    public static class FloorListRequest {
+  /** リクエストパラメータ. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class FloorListRequest {
 
-        private FloorListParameters parameters;
-    }
+    /** リクエストパラメータ. */
+    @Nonnull FloorListParameters parameters;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class FloorListResult {
+  /** レスポンスフィールド. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class FloorListResult {
 
-        private List<Site> site;
-    }
+    /** サイト情報リスト. */
+    @Nonnull List<Site> site;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class Site {
+  /** サイト情報. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Site {
 
-        private String name;
+    /** サイト名. */
+    @Nonnull String name;
 
-        private String code;
+    /** サイトコード. */
+    @Nonnull String code;
 
-        private List<Service> service;
-    }
+    /** サービス情報リスト. */
+    @Nonnull List<Service> service;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class Service {
+  /** サービス情報. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Service {
 
-        private String name;
+    /** サービス名. */
+    @Nonnull String name;
 
-        private String code;
+    /** コード名. */
+    @Nonnull String code;
 
-        private List<Floor> floor;
-    }
+    /** フロア情報リスト. */
+    @Nonnull List<Floor> floor;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class Floor {
+  /** フロア情報. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Floor {
 
-        private String id;
+    /** フロアID. */
+    @Nonnull String id;
 
-        private String name;
+    /** フロア名. */
+    @Nonnull String name;
 
-        private String code;
-    }
+    /** フロアコード. */
+    @Nonnull String code;
+  }
 }

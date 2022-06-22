@@ -2,25 +2,25 @@ package dmm4j;
 
 public interface Dmm4j {
 
-    ItemListResponse getItemList(ItemListParameters parameters);
+  ItemListResponse getItemList(ItemListParameters parameters);
 
-    FloorListResponse getFloorList(FloorListParameters parameters);
+  FloorListResponse getFloorList(FloorListParameters parameters);
 
-    ActressSearchResponse getActressSearch(ActressSearchParameters parameters);
+  ActressSearchResponse getActressSearch(ActressSearchParameters parameters);
 
-    GenreSearchResponse getGenreSearch(SeriesSearchParameters parameters);
+  GenreSearchResponse getGenreSearch(SeriesSearchParameters parameters);
 
-    MakerSearchResponse getMakerSearch(MakerSearchParameters parameters);
+  MakerSearchResponse getMakerSearch(MakerSearchParameters parameters);
 
-    SeriesSearchResponse getSeriesSearch(SeriesSearchParameters parameters);
+  SeriesSearchResponse getSeriesSearch(SeriesSearchParameters parameters);
 
-    AuthorSearchResponse getAuthorSearch(AuthorSearchParameters parameters);
+  AuthorSearchResponse getAuthorSearch(AuthorSearchParameters parameters);
 
-    static Dmm4j getInstance() {
-        return Dmm4jImpl.INSTANCE;
-    }
+  static Dmm4j getInstance() {
+    return Dmm4jImpl.INSTANCE;
+  }
 
-    static Dmm4j getInstance(String apiId, String affiliateId) {
-        return new Dmm4jImpl(apiId, affiliateId);
-    }
+  static Dmm4j getInstance(String apiId, String affiliateId) {
+    return new Dmm4jImpl(apiId, affiliateId);
+  }
 }

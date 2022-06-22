@@ -1,26 +1,38 @@
 package dmm4j;
 
-import lombok.*;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import lombok.Builder;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+/** DMM.com メーカー検索API パラメータ. */
+@Jacksonized
+@Value
+@Builder(toBuilder = true)
 public class MakerSearchParameters {
 
-    String apiId;
+  /** API ID. */
+  @Nullable String apiId;
 
-    String affiliateId;
+  /** アフィリエイトID. */
+  @Nullable String affiliateId;
 
-    String floorId;
+  /** フロアID. */
+  @Nonnull String floorId;
 
-    String initial;
+  /** 頭文字(50音). */
+  @Nullable String initial;
 
-    Integer hits;
+  /** 取得件数. */
+  @Nullable Integer hits;
 
-    Integer offset;
+  /** 検索開始位置. */
+  @Nullable Integer offset;
 
-    String output;
+  /** 出力形式. */
+  @Nullable String output;
 
-    String callback;
+  /** コールバック. */
+  @Nullable String callback;
 }

@@ -3,98 +3,142 @@ package dmm4j;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import java.time.LocalDate;
+import java.util.List;
+import javax.annotation.Nonnull;
+import lombok.Builder;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
-@NoArgsConstructor
+/** DMM.com 女優API レスポンス. */
+@Jacksonized
+@Value
+@Builder(toBuilder = true)
 public class ActressSearchResponse {
 
-    private ActressSearchRequest request;
+  /** リクエストパラメータ. */
+  @Nonnull ActressSearchRequest request;
 
-    private ActressSearchResult result;
+  /** レスポンスフィールド. */
+  @Nonnull ActressSearchResult result;
 
-    @Data
-    @NoArgsConstructor
-    public static class ActressSearchRequest {
+  /** リクエストパラメータ. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class ActressSearchRequest {
 
-        private ActressSearchParameters parameters;
-    }
+    /** リクエストパラメータ. */
+    @Nonnull ActressSearchParameters parameters;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class ActressSearchResult {
+  /** レスポンスフィールド. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class ActressSearchResult {
 
-        private String status;
+    /** ステータスコード. */
+    @Nonnull String status;
 
-        private int resultCount;
+    /** 取得件数. */
+    int resultCount;
 
-        private int totalCount;
+    /** 全体件数. */
+    int totalCount;
 
-        private int firstPosition;
+    /** 検索開始位置. */
+    int firstPosition;
 
-        private Actress actress;
-    }
+    /** 女優情報リスト. */
+    @Nonnull List<Actress> actress;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class Actress {
+  /** 女優情報. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Actress {
 
-        private String id;
+    /** 女優ID. */
+    @Nonnull String id;
 
-        private String name;
+    /** 女優名. */
+    @Nonnull String name;
 
-        private String ruby;
+    /** 女優名（読み仮名）. */
+    String ruby;
 
-        private Integer bust;
+    /** バスト. */
+    Integer bust;
 
-        private String cup;
+    /** カップ数. */
+    String cup;
 
-        private Integer waist;
+    /** ウエスト. */
+    Integer waist;
 
-        private Integer hip;
+    /** ヒップ. */
+    Integer hip;
 
-        private Integer height;
+    /** 身長. */
+    Integer height;
 
-        @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-        @JsonFormat(pattern = "yyyy-MM-dd")
-        private LocalDate birthday;
+    /** 誕生日. */
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    LocalDate birthday;
 
-        private String bloodType;
+    /** 血液型. */
+    String bloodType;
 
-        private String hobby;
+    /** 趣味. */
+    String hobby;
 
-        private String prefectures;
+    /** 出身地. */
+    String prefectures;
 
-        @JsonProperty("imageURL")
-        private ImageUrl imageUrl;
+    /** 画像URL. */
+    @Nonnull
+    @JsonProperty("imageURL")
+    ImageUrl imageUrl;
 
-        @JsonProperty("listURL")
-        private ListUrl listUrl;
-    }
+    /** リストページURL（アフィリエイトID付き）. */
+    @Nonnull
+    @JsonProperty("listURL")
+    ListUrl listUrl;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class ImageUrl {
+  /** 画像URL. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class ImageUrl {
 
-        private String small;
+    /** 画像（小）. */
+    String small;
 
-        private String large;
-    }
+    /** 画像（大）. */
+    String large;
+  }
 
-    @Data
-    @NoArgsConstructor
-    public static class ListUrl {
+  /** リストページURL（アフィリエイトID付き）. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class ListUrl {
 
-        private String digital;
+    /** 動画. */
+    String digital;
 
-        private String monthlyPremium;
+    /** 月額動画 見放題chデラックス. */
+    String monthlyPremium;
 
-        private String mono;
+    /** DVD通販. */
+    String mono;
 
-        private String rental;
-    }
+    /** DVDレンタル. */
+    String rental;
+  }
 }
