@@ -7,8 +7,7 @@ public interface Dmm4j {
 
   ItemListResponse getItemList(ItemListParameters parameters);
 
-  HttpResponse<String> getItemListRawResponse(ItemListParameters parameters)
-      throws Dmm4jException;
+  HttpResponse<String> getItemListRawResponse(ItemListParameters parameters) throws Dmm4jException;
 
   FloorListResponse getFloorList(FloorListParameters parameters);
 

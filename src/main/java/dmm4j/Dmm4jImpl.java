@@ -72,9 +72,10 @@ public final class Dmm4jImpl implements Dmm4j {
   @Nonnull
   private URI buildURI(String pathSegment, Stream<Map.Entry<String, String>> parameters)
       throws Dmm4jException {
-    final var nameValuePairs = parameters
-        .map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue()))
-        .collect(Collectors.<NameValuePair>toList());
+    final var nameValuePairs =
+        parameters
+            .map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue()))
+            .collect(Collectors.<NameValuePair>toList());
 
     try {
       return new URIBuilder()
@@ -119,12 +120,10 @@ public final class Dmm4jImpl implements Dmm4j {
             Map.entry("service", Optional.ofNullable(parameters.getService())),
             Map.entry("floor", Optional.ofNullable(parameters.getFloor())),
             Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
-            Map.entry(
-                "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
+            Map.entry("offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
             Map.entry(
                 "sort",
-                Optional.ofNullable(parameters.getSort())
-                    .map(ItemListParameters.Sort::getValue)),
+                Optional.ofNullable(parameters.getSort()).map(ItemListParameters.Sort::getValue)),
             Map.entry("keyword", Optional.ofNullable(parameters.getKeyword())),
             Map.entry("cid", Optional.ofNullable(parameters.getCid())),
             Map.entry(
@@ -184,8 +183,7 @@ public final class Dmm4jImpl implements Dmm4j {
 
   @Override
   public ActressSearchResponse getActressSearch(ActressSearchParameters parameters) {
-    Stream<Map.Entry<String, String>> params =
-        this.buildQuery(parameters);
+    Stream<Map.Entry<String, String>> params = this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/ActressSearch")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
@@ -212,17 +210,13 @@ public final class Dmm4jImpl implements Dmm4j {
             Map.entry("actress_id", Optional.ofNullable(parameters.getActressId())),
             Map.entry("keyword", Optional.ofNullable(parameters.getKeyword())),
             Map.entry(
-                "gte_bust",
-                Optional.ofNullable(parameters.getGteBust()).map(Objects::toString)),
+                "gte_bust", Optional.ofNullable(parameters.getGteBust()).map(Objects::toString)),
             Map.entry(
-                "lte_bust",
-                Optional.ofNullable(parameters.getLteBust()).map(Objects::toString)),
+                "lte_bust", Optional.ofNullable(parameters.getLteBust()).map(Objects::toString)),
             Map.entry(
-                "gte_waist",
-                Optional.ofNullable(parameters.getGteWaist()).map(Objects::toString)),
+                "gte_waist", Optional.ofNullable(parameters.getGteWaist()).map(Objects::toString)),
             Map.entry(
-                "lte_waist",
-                Optional.ofNullable(parameters.getLteWaist()).map(Objects::toString)),
+                "lte_waist", Optional.ofNullable(parameters.getLteWaist()).map(Objects::toString)),
             Map.entry(
                 "gte_hip", Optional.ofNullable(parameters.getGteHip()).map(Objects::toString)),
             Map.entry(
@@ -235,15 +229,12 @@ public final class Dmm4jImpl implements Dmm4j {
                 Optional.ofNullable(parameters.getLteHeight()).map(Objects::toString)),
             Map.entry(
                 "gte_birthday",
-                Optional.ofNullable(parameters.getGteBirthday())
-                    .map(LOCAL_DATE_FORMATTER::format)),
+                Optional.ofNullable(parameters.getGteBirthday()).map(LOCAL_DATE_FORMATTER::format)),
             Map.entry(
                 "lte_birthday",
-                Optional.ofNullable(parameters.getLteBirthday())
-                    .map(LOCAL_DATE_FORMATTER::format)),
+                Optional.ofNullable(parameters.getLteBirthday()).map(LOCAL_DATE_FORMATTER::format)),
             Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
-            Map.entry(
-                "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
+            Map.entry("offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
             Map.entry(
                 "sort",
                 Optional.ofNullable(parameters.getSort())
@@ -283,8 +274,7 @@ public final class Dmm4jImpl implements Dmm4j {
             Map.entry("floor_id", Optional.of(parameters.getFloorId())),
             Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
             Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
-            Map.entry(
-                "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
+            Map.entry("offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
             Map.entry("output", Optional.ofNullable(parameters.getOutput())),
             Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
         .filter(entry -> entry.getValue().isPresent())
@@ -320,8 +310,7 @@ public final class Dmm4jImpl implements Dmm4j {
             Map.entry("floor_id", Optional.of(parameters.getFloorId())),
             Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
             Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
-            Map.entry(
-                "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
+            Map.entry("offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
             Map.entry("output", Optional.ofNullable(parameters.getOutput())),
             Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
         .filter(entry -> entry.getValue().isPresent())
@@ -357,8 +346,7 @@ public final class Dmm4jImpl implements Dmm4j {
             Map.entry("floor_id", Optional.of(parameters.getFloorId())),
             Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
             Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
-            Map.entry(
-                "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
+            Map.entry("offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
             Map.entry("output", Optional.ofNullable(parameters.getOutput())),
             Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
         .filter(entry -> entry.getValue().isPresent())
@@ -394,8 +382,7 @@ public final class Dmm4jImpl implements Dmm4j {
             Map.entry("floor_id", Optional.of(parameters.getFloorId())),
             Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
             Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
-            Map.entry(
-                "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
+            Map.entry("offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
             Map.entry("output", Optional.ofNullable(parameters.getOutput())),
             Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
         .filter(entry -> entry.getValue().isPresent())
@@ -403,13 +390,13 @@ public final class Dmm4jImpl implements Dmm4j {
   }
 
   private <T> HttpResponse<String> get(
-      String pathSegment,
-      T parameter,
-      Function<T, Stream<Entry<String, String>>> buildQueryFunc) throws Dmm4jException {
-    final var request = HttpRequest.newBuilder()
-        .GET()
-        .uri(this.buildURI(pathSegment, buildQueryFunc.apply(parameter)))
-        .build();
+      String pathSegment, T parameter, Function<T, Stream<Entry<String, String>>> buildQueryFunc)
+      throws Dmm4jException {
+    final var request =
+        HttpRequest.newBuilder()
+            .GET()
+            .uri(this.buildURI(pathSegment, buildQueryFunc.apply(parameter)))
+            .build();
 
     final var client = HttpClient.newHttpClient();
 
