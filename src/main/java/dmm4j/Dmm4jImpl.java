@@ -4,22 +4,41 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import dmm4j.exception.Dmm4jException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.Nonnull;
 import kong.unirest.Unirest;
 import kong.unirest.jackson.JacksonObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.message.BasicNameValuePair;
 
 public final class Dmm4jImpl implements Dmm4j {
 
   static Dmm4j INSTANCE = new Dmm4jImpl();
 
-  private static final String BASE_URL = "https://api.dmm.com/affiliate/v3";
+  private static final String SCHEMA = "https";
+
+  private static final String HOST = "api.dmm.com";
+
+  private static final String BASE_PATH = "/affiliate/v3";
+
+  private static final String BASE_URL = SCHEMA + "://" + HOST + BASE_PATH;
 
   private static final DateTimeFormatter LOCAL_DATE_TIME_FORMATTER =
       DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -33,13 +52,13 @@ public final class Dmm4jImpl implements Dmm4j {
   @Getter @Setter private String affiliateId;
 
   Dmm4jImpl() {
-    var objectMapper =
+    final var objectMapper =
         new ObjectMapper()
             .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
             .configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true)
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    var jacksonObjectMapper = new JacksonObjectMapper(objectMapper);
+    final var jacksonObjectMapper = new JacksonObjectMapper(objectMapper);
     Unirest.config().setObjectMapper(jacksonObjectMapper);
   }
 
@@ -50,51 +69,28 @@ public final class Dmm4jImpl implements Dmm4j {
     this.affiliateId = affiliateId;
   }
 
+  @Nonnull
+  private URI buildURI(String pathSegment, Stream<Map.Entry<String, String>> parameters)
+      throws Dmm4jException {
+    final var nameValuePairs = parameters
+        .map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue()))
+        .collect(Collectors.<NameValuePair>toList());
+
+    try {
+      return new URIBuilder()
+          .setScheme(SCHEMA)
+          .setHost(HOST)
+          .setPath(BASE_PATH + "/" + pathSegment)
+          .setParameters(nameValuePairs)
+          .build();
+    } catch (URISyntaxException e) {
+      throw new Dmm4jException(e);
+    }
+  }
+
   @Override
   public ItemListResponse getItemList(ItemListParameters parameters) {
-    Stream<Map.Entry<String, String>> params =
-        Stream.of(
-                Map.entry(
-                    "api_id",
-                    Optional.ofNullable(parameters.getApiId())
-                        .or(() -> Optional.ofNullable(this.apiId))),
-                Map.entry(
-                    "affiliate_id",
-                    Optional.ofNullable(parameters.getAffiliateId())
-                        .or(() -> Optional.ofNullable(this.affiliateId))),
-                Map.entry("site", Optional.of(parameters.getSite().getValue())),
-                Map.entry("service", Optional.ofNullable(parameters.getService())),
-                Map.entry("floor", Optional.ofNullable(parameters.getFloor())),
-                Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
-                Map.entry(
-                    "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
-                Map.entry(
-                    "sort",
-                    Optional.ofNullable(parameters.getSort())
-                        .map(ItemListParameters.Sort::getValue)),
-                Map.entry("keyword", Optional.ofNullable(parameters.getKeyword())),
-                Map.entry("cid", Optional.ofNullable(parameters.getCid())),
-                Map.entry(
-                    "article",
-                    Optional.ofNullable(parameters.getArticle())
-                        .map(ItemListParameters.Article::getValue)),
-                Map.entry("article_id", Optional.ofNullable(parameters.getArticleId())),
-                Map.entry(
-                    "gte_date",
-                    Optional.ofNullable(parameters.getGteData())
-                        .map(LOCAL_DATE_TIME_FORMATTER::format)),
-                Map.entry(
-                    "lte_date",
-                    Optional.ofNullable(parameters.getLteDate())
-                        .map(LOCAL_DATE_TIME_FORMATTER::format)),
-                Map.entry(
-                    "mono_stock",
-                    Optional.ofNullable(parameters.getMonoStock())
-                        .map(ItemListParameters.MonoStock::getValue)),
-                Map.entry("output", Optional.ofNullable(parameters.getOutput())),
-                Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
-            .filter(entry -> entry.getValue().isPresent())
-            .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
+    final var params = this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/ItemList")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
@@ -103,20 +99,60 @@ public final class Dmm4jImpl implements Dmm4j {
   }
 
   @Override
+  public HttpResponse<String> getItemListRawResponse(ItemListParameters parameters)
+      throws Dmm4jException {
+    return this.get("ItemList", parameters, this::buildQuery);
+  }
+
+  @Nonnull
+  private Stream<Map.Entry<String, String>> buildQuery(ItemListParameters parameters) {
+    return Stream.of(
+            Map.entry(
+                "api_id",
+                Optional.ofNullable(parameters.getApiId())
+                    .or(() -> Optional.ofNullable(this.apiId))),
+            Map.entry(
+                "affiliate_id",
+                Optional.ofNullable(parameters.getAffiliateId())
+                    .or(() -> Optional.ofNullable(this.affiliateId))),
+            Map.entry("site", Optional.of(parameters.getSite().getValue())),
+            Map.entry("service", Optional.ofNullable(parameters.getService())),
+            Map.entry("floor", Optional.ofNullable(parameters.getFloor())),
+            Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
+            Map.entry(
+                "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
+            Map.entry(
+                "sort",
+                Optional.ofNullable(parameters.getSort())
+                    .map(ItemListParameters.Sort::getValue)),
+            Map.entry("keyword", Optional.ofNullable(parameters.getKeyword())),
+            Map.entry("cid", Optional.ofNullable(parameters.getCid())),
+            Map.entry(
+                "article",
+                Optional.ofNullable(parameters.getArticle())
+                    .map(ItemListParameters.Article::getValue)),
+            Map.entry("article_id", Optional.ofNullable(parameters.getArticleId())),
+            Map.entry(
+                "gte_date",
+                Optional.ofNullable(parameters.getGteData())
+                    .map(LOCAL_DATE_TIME_FORMATTER::format)),
+            Map.entry(
+                "lte_date",
+                Optional.ofNullable(parameters.getLteDate())
+                    .map(LOCAL_DATE_TIME_FORMATTER::format)),
+            Map.entry(
+                "mono_stock",
+                Optional.ofNullable(parameters.getMonoStock())
+                    .map(ItemListParameters.MonoStock::getValue)),
+            Map.entry("output", Optional.ofNullable(parameters.getOutput())),
+            Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
+        .filter(entry -> entry.getValue().isPresent())
+        .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
+  }
+
+  @Override
   public FloorListResponse getFloorList(FloorListParameters parameters) {
-    Stream<Map.Entry<String, String>> params =
-        Stream.of(
-                Map.entry(
-                    "api_id",
-                    Optional.ofNullable(parameters.getApiId())
-                        .or(() -> Optional.ofNullable(this.apiId))),
-                Map.entry(
-                    "affiliate_id",
-                    Optional.ofNullable(parameters.getAffiliateId())
-                        .or(() -> Optional.ofNullable(this.affiliateId))),
-                Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
-            .filter(entry -> entry.getValue().isPresent())
-            .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
+    final var params = this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/FloorList")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
@@ -125,61 +161,31 @@ public final class Dmm4jImpl implements Dmm4j {
   }
 
   @Override
+  public HttpResponse<String> getFloorListRawResponse(FloorListParameters parameters)
+      throws Dmm4jException {
+    return this.get("FloorList", parameters, this::buildQuery);
+  }
+
+  @Nonnull
+  private Stream<Map.Entry<String, String>> buildQuery(FloorListParameters parameters) {
+    return Stream.of(
+            Map.entry(
+                "api_id",
+                Optional.ofNullable(parameters.getApiId())
+                    .or(() -> Optional.ofNullable(this.apiId))),
+            Map.entry(
+                "affiliate_id",
+                Optional.ofNullable(parameters.getAffiliateId())
+                    .or(() -> Optional.ofNullable(this.affiliateId))),
+            Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
+        .filter(entry -> entry.getValue().isPresent())
+        .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
+  }
+
+  @Override
   public ActressSearchResponse getActressSearch(ActressSearchParameters parameters) {
     Stream<Map.Entry<String, String>> params =
-        Stream.of(
-                Map.entry(
-                    "api_id",
-                    Optional.ofNullable(parameters.getApiId())
-                        .or(() -> Optional.ofNullable(this.apiId))),
-                Map.entry(
-                    "affiliate_id",
-                    Optional.ofNullable(parameters.getAffiliateId())
-                        .or(() -> Optional.ofNullable(this.affiliateId))),
-                Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
-                Map.entry("actress_id", Optional.ofNullable(parameters.getActressId())),
-                Map.entry("keyword", Optional.ofNullable(parameters.getKeyword())),
-                Map.entry(
-                    "gte_bust",
-                    Optional.ofNullable(parameters.getGteBust()).map(Objects::toString)),
-                Map.entry(
-                    "lte_bust",
-                    Optional.ofNullable(parameters.getLteBust()).map(Objects::toString)),
-                Map.entry(
-                    "gte_waist",
-                    Optional.ofNullable(parameters.getGteWaist()).map(Objects::toString)),
-                Map.entry(
-                    "lte_waist",
-                    Optional.ofNullable(parameters.getLteWaist()).map(Objects::toString)),
-                Map.entry(
-                    "gte_hip", Optional.ofNullable(parameters.getGteHip()).map(Objects::toString)),
-                Map.entry(
-                    "lte_hip", Optional.ofNullable(parameters.getLteHip()).map(Objects::toString)),
-                Map.entry(
-                    "gte_height",
-                    Optional.ofNullable(parameters.getGteHeight()).map(Objects::toString)),
-                Map.entry(
-                    "lte_height",
-                    Optional.ofNullable(parameters.getLteHeight()).map(Objects::toString)),
-                Map.entry(
-                    "gte_birthday",
-                    Optional.ofNullable(parameters.getGteBirthday())
-                        .map(LOCAL_DATE_FORMATTER::format)),
-                Map.entry(
-                    "lte_birthday",
-                    Optional.ofNullable(parameters.getLteBirthday())
-                        .map(LOCAL_DATE_FORMATTER::format)),
-                Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
-                Map.entry(
-                    "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
-                Map.entry(
-                    "sort",
-                    Optional.ofNullable(parameters.getSort())
-                        .map(ActressSearchParameters.Sort::getValue)),
-                Map.entry("output", Optional.ofNullable(parameters.getOutput())),
-                Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
-            .filter(entry -> entry.getValue().isPresent())
-            .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
+        this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/ActressSearch")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
@@ -187,27 +193,70 @@ public final class Dmm4jImpl implements Dmm4j {
         .getBody();
   }
 
+  public HttpResponse<String> getActressSearchRawResponse(ActressSearchParameters parameters)
+      throws Dmm4jException {
+    return this.get("ActressSearch", parameters, this::buildQuery);
+  }
+
+  private Stream<Map.Entry<String, String>> buildQuery(ActressSearchParameters parameters) {
+    return Stream.of(
+            Map.entry(
+                "api_id",
+                Optional.ofNullable(parameters.getApiId())
+                    .or(() -> Optional.ofNullable(this.apiId))),
+            Map.entry(
+                "affiliate_id",
+                Optional.ofNullable(parameters.getAffiliateId())
+                    .or(() -> Optional.ofNullable(this.affiliateId))),
+            Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
+            Map.entry("actress_id", Optional.ofNullable(parameters.getActressId())),
+            Map.entry("keyword", Optional.ofNullable(parameters.getKeyword())),
+            Map.entry(
+                "gte_bust",
+                Optional.ofNullable(parameters.getGteBust()).map(Objects::toString)),
+            Map.entry(
+                "lte_bust",
+                Optional.ofNullable(parameters.getLteBust()).map(Objects::toString)),
+            Map.entry(
+                "gte_waist",
+                Optional.ofNullable(parameters.getGteWaist()).map(Objects::toString)),
+            Map.entry(
+                "lte_waist",
+                Optional.ofNullable(parameters.getLteWaist()).map(Objects::toString)),
+            Map.entry(
+                "gte_hip", Optional.ofNullable(parameters.getGteHip()).map(Objects::toString)),
+            Map.entry(
+                "lte_hip", Optional.ofNullable(parameters.getLteHip()).map(Objects::toString)),
+            Map.entry(
+                "gte_height",
+                Optional.ofNullable(parameters.getGteHeight()).map(Objects::toString)),
+            Map.entry(
+                "lte_height",
+                Optional.ofNullable(parameters.getLteHeight()).map(Objects::toString)),
+            Map.entry(
+                "gte_birthday",
+                Optional.ofNullable(parameters.getGteBirthday())
+                    .map(LOCAL_DATE_FORMATTER::format)),
+            Map.entry(
+                "lte_birthday",
+                Optional.ofNullable(parameters.getLteBirthday())
+                    .map(LOCAL_DATE_FORMATTER::format)),
+            Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
+            Map.entry(
+                "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
+            Map.entry(
+                "sort",
+                Optional.ofNullable(parameters.getSort())
+                    .map(ActressSearchParameters.Sort::getValue)),
+            Map.entry("output", Optional.ofNullable(parameters.getOutput())),
+            Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
+        .filter(entry -> entry.getValue().isPresent())
+        .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
+  }
+
   @Override
-  public GenreSearchResponse getGenreSearch(SeriesSearchParameters parameters) {
-    var params =
-        Stream.of(
-                Map.entry(
-                    "api_id",
-                    Optional.ofNullable(parameters.getApiId())
-                        .or(() -> Optional.ofNullable(this.apiId))),
-                Map.entry(
-                    "affiliate_id",
-                    Optional.ofNullable(parameters.getAffiliateId())
-                        .or(() -> Optional.ofNullable(this.affiliateId))),
-                Map.entry("floor_id", Optional.of(parameters.getFloorId())),
-                Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
-                Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
-                Map.entry(
-                    "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
-                Map.entry("output", Optional.ofNullable(parameters.getOutput())),
-                Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
-            .filter(entry -> entry.getValue().isPresent())
-            .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
+  public GenreSearchResponse getGenreSearch(GenreSearchParameters parameters) {
+    var params = this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/GenreSearch")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
@@ -215,27 +264,36 @@ public final class Dmm4jImpl implements Dmm4j {
         .getBody();
   }
 
+  public HttpResponse<String> getGenreSearchRawResponse(GenreSearchParameters parameters)
+      throws Dmm4jException {
+    return this.get("GenreSearch", parameters, this::buildQuery);
+  }
+
+  @Nonnull
+  private Stream<Map.Entry<String, String>> buildQuery(GenreSearchParameters parameters) {
+    return Stream.of(
+            Map.entry(
+                "api_id",
+                Optional.ofNullable(parameters.getApiId())
+                    .or(() -> Optional.ofNullable(this.apiId))),
+            Map.entry(
+                "affiliate_id",
+                Optional.ofNullable(parameters.getAffiliateId())
+                    .or(() -> Optional.ofNullable(this.affiliateId))),
+            Map.entry("floor_id", Optional.of(parameters.getFloorId())),
+            Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
+            Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
+            Map.entry(
+                "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
+            Map.entry("output", Optional.ofNullable(parameters.getOutput())),
+            Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
+        .filter(entry -> entry.getValue().isPresent())
+        .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
+  }
+
   @Override
   public MakerSearchResponse getMakerSearch(MakerSearchParameters parameters) {
-    Stream<Map.Entry<String, String>> params =
-        Stream.of(
-                Map.entry(
-                    "api_id",
-                    Optional.ofNullable(parameters.getApiId())
-                        .or(() -> Optional.ofNullable(this.apiId))),
-                Map.entry(
-                    "affiliate_id",
-                    Optional.ofNullable(parameters.getAffiliateId())
-                        .or(() -> Optional.ofNullable(this.affiliateId))),
-                Map.entry("floor_id", Optional.of(parameters.getFloorId())),
-                Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
-                Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
-                Map.entry(
-                    "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
-                Map.entry("output", Optional.ofNullable(parameters.getOutput())),
-                Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
-            .filter(entry -> entry.getValue().isPresent())
-            .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
+    Stream<Map.Entry<String, String>> params = this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/MakerSearch")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
@@ -243,27 +301,36 @@ public final class Dmm4jImpl implements Dmm4j {
         .getBody();
   }
 
+  public HttpResponse<String> getMakerSearchRawResponse(MakerSearchParameters parameters)
+      throws Dmm4jException {
+    return this.get("MakerSearch", parameters, this::buildQuery);
+  }
+
+  @Nonnull
+  private Stream<Map.Entry<String, String>> buildQuery(MakerSearchParameters parameters) {
+    return Stream.of(
+            Map.entry(
+                "api_id",
+                Optional.ofNullable(parameters.getApiId())
+                    .or(() -> Optional.ofNullable(this.apiId))),
+            Map.entry(
+                "affiliate_id",
+                Optional.ofNullable(parameters.getAffiliateId())
+                    .or(() -> Optional.ofNullable(this.affiliateId))),
+            Map.entry("floor_id", Optional.of(parameters.getFloorId())),
+            Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
+            Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
+            Map.entry(
+                "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
+            Map.entry("output", Optional.ofNullable(parameters.getOutput())),
+            Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
+        .filter(entry -> entry.getValue().isPresent())
+        .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
+  }
+
   @Override
   public SeriesSearchResponse getSeriesSearch(SeriesSearchParameters parameters) {
-    Stream<Map.Entry<String, String>> params =
-        Stream.of(
-                Map.entry(
-                    "api_id",
-                    Optional.ofNullable(parameters.getApiId())
-                        .or(() -> Optional.ofNullable(this.apiId))),
-                Map.entry(
-                    "affiliate_id",
-                    Optional.ofNullable(parameters.getAffiliateId())
-                        .or(() -> Optional.ofNullable(this.affiliateId))),
-                Map.entry("floor_id", Optional.of(parameters.getFloorId())),
-                Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
-                Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
-                Map.entry(
-                    "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
-                Map.entry("output", Optional.ofNullable(parameters.getOutput())),
-                Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
-            .filter(entry -> entry.getValue().isPresent())
-            .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
+    Stream<Map.Entry<String, String>> params = this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/SeriesSearch")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
@@ -271,31 +338,87 @@ public final class Dmm4jImpl implements Dmm4j {
         .getBody();
   }
 
+  public HttpResponse<String> getSeriesSearchRawResponse(SeriesSearchParameters parameters)
+      throws Dmm4jException {
+    return this.get("SeriesSearch", parameters, this::buildQuery);
+  }
+
+  @Nonnull
+  private Stream<Entry<String, String>> buildQuery(SeriesSearchParameters parameters) {
+    return Stream.of(
+            Map.entry(
+                "api_id",
+                Optional.ofNullable(parameters.getApiId())
+                    .or(() -> Optional.ofNullable(this.apiId))),
+            Map.entry(
+                "affiliate_id",
+                Optional.ofNullable(parameters.getAffiliateId())
+                    .or(() -> Optional.ofNullable(this.affiliateId))),
+            Map.entry("floor_id", Optional.of(parameters.getFloorId())),
+            Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
+            Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
+            Map.entry(
+                "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
+            Map.entry("output", Optional.ofNullable(parameters.getOutput())),
+            Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
+        .filter(entry -> entry.getValue().isPresent())
+        .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
+  }
+
   @Override
   public AuthorSearchResponse getAuthorSearch(AuthorSearchParameters parameters) {
-    Stream<Map.Entry<String, String>> params =
-        Stream.of(
-                Map.entry(
-                    "api_id",
-                    Optional.ofNullable(parameters.getApiId())
-                        .or(() -> Optional.ofNullable(this.apiId))),
-                Map.entry(
-                    "affiliate_id",
-                    Optional.ofNullable(parameters.getAffiliateId())
-                        .or(() -> Optional.ofNullable(this.affiliateId))),
-                Map.entry("floor_id", Optional.of(parameters.getFloorId())),
-                Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
-                Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
-                Map.entry(
-                    "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
-                Map.entry("output", Optional.ofNullable(parameters.getOutput())),
-                Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
-            .filter(entry -> entry.getValue().isPresent())
-            .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
+    Stream<Map.Entry<String, String>> params = this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/AuthorSearch")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
         .asObject(AuthorSearchResponse.class)
         .getBody();
+  }
+
+  public HttpResponse<String> getAuthorSearchRawResponse(AuthorSearchParameters parameters)
+      throws Dmm4jException {
+    return this.get("AuthorSearch", parameters, this::buildQuery);
+  }
+
+  @Nonnull
+  private Stream<Entry<String, String>> buildQuery(AuthorSearchParameters parameters) {
+    return Stream.of(
+            Map.entry(
+                "api_id",
+                Optional.ofNullable(parameters.getApiId())
+                    .or(() -> Optional.ofNullable(this.apiId))),
+            Map.entry(
+                "affiliate_id",
+                Optional.ofNullable(parameters.getAffiliateId())
+                    .or(() -> Optional.ofNullable(this.affiliateId))),
+            Map.entry("floor_id", Optional.of(parameters.getFloorId())),
+            Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
+            Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
+            Map.entry(
+                "offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
+            Map.entry("output", Optional.ofNullable(parameters.getOutput())),
+            Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
+        .filter(entry -> entry.getValue().isPresent())
+        .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
+  }
+
+  private <T> HttpResponse<String> get(
+      String pathSegment,
+      T parameter,
+      Function<T, Stream<Entry<String, String>>> buildQueryFunc) throws Dmm4jException {
+    final var request = HttpRequest.newBuilder()
+        .GET()
+        .uri(this.buildURI(pathSegment, buildQueryFunc.apply(parameter)))
+        .build();
+
+    final var client = HttpClient.newHttpClient();
+
+    System.out.println(request);
+
+    try {
+      return client.send(request, HttpResponse.BodyHandlers.ofString());
+    } catch (IOException | InterruptedException e) {
+      throw new Dmm4jException(e);
+    }
   }
 }

@@ -25,7 +25,7 @@ public class GenreSearchResponse {
   public static class GenreSearchRequest {
 
     /** リクエストパラメータ. */
-    @Nonnull SeriesSearchParameters parameters;
+    @Nonnull GenreSearchParameters parameters;
   }
 
   /** レスポンスフィールド. */
