@@ -6,7 +6,7 @@
 
     <groupId>org.github.suzumiyaaoba</groupId>
     <artifactId>dmm4j</artifactId>
-    <version>2.0-SNAPSHOT</version>
+    <version>2.0.1-SNAPSHOT</version>
 
     <distributionManagement>
         <repository>
