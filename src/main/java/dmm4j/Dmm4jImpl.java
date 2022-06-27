@@ -24,6 +24,7 @@ import kong.unirest.Unirest;
 import kong.unirest.jackson.JacksonObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.val;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
@@ -52,7 +53,7 @@ public final class Dmm4jImpl implements Dmm4j {
   @Getter @Setter private String affiliateId;
 
   Dmm4jImpl() {
-    final var objectMapper =
+    val objectMapper =
         new ObjectMapper()
             .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
             .configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true)
@@ -72,7 +73,7 @@ public final class Dmm4jImpl implements Dmm4j {
   @Nonnull
   private URI buildURI(String pathSegment, Stream<Map.Entry<String, String>> parameters)
       throws Dmm4jException {
-    final var nameValuePairs =
+    val nameValuePairs =
         parameters
             .map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue()))
             .collect(Collectors.<NameValuePair>toList());
@@ -91,7 +92,7 @@ public final class Dmm4jImpl implements Dmm4j {
 
   @Override
   public ItemListResponse getItemList(ItemListParameters parameters) {
-    final var params = this.buildQuery(parameters);
+    val params = this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/ItemList")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
@@ -151,7 +152,7 @@ public final class Dmm4jImpl implements Dmm4j {
 
   @Override
   public FloorListResponse getFloorList(FloorListParameters parameters) {
-    final var params = this.buildQuery(parameters);
+    val params = this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/FloorList")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
@@ -183,7 +184,7 @@ public final class Dmm4jImpl implements Dmm4j {
 
   @Override
   public ActressSearchResponse getActressSearch(ActressSearchParameters parameters) {
-    Stream<Map.Entry<String, String>> params = this.buildQuery(parameters);
+    val params = this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/ActressSearch")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
@@ -247,7 +248,7 @@ public final class Dmm4jImpl implements Dmm4j {
 
   @Override
   public GenreSearchResponse getGenreSearch(GenreSearchParameters parameters) {
-    var params = this.buildQuery(parameters);
+    val params = this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/GenreSearch")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
@@ -283,7 +284,7 @@ public final class Dmm4jImpl implements Dmm4j {
 
   @Override
   public MakerSearchResponse getMakerSearch(MakerSearchParameters parameters) {
-    Stream<Map.Entry<String, String>> params = this.buildQuery(parameters);
+    val params = this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/MakerSearch")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
@@ -319,7 +320,7 @@ public final class Dmm4jImpl implements Dmm4j {
 
   @Override
   public SeriesSearchResponse getSeriesSearch(SeriesSearchParameters parameters) {
-    Stream<Map.Entry<String, String>> params = this.buildQuery(parameters);
+    val params = this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/SeriesSearch")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
@@ -355,7 +356,7 @@ public final class Dmm4jImpl implements Dmm4j {
 
   @Override
   public AuthorSearchResponse getAuthorSearch(AuthorSearchParameters parameters) {
-    Stream<Map.Entry<String, String>> params = this.buildQuery(parameters);
+    val params = this.buildQuery(parameters);
 
     return Unirest.get(BASE_URL + "/AuthorSearch")
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
@@ -392,15 +393,13 @@ public final class Dmm4jImpl implements Dmm4j {
   private <T> HttpResponse<String> get(
       String pathSegment, T parameter, Function<T, Stream<Entry<String, String>>> buildQueryFunc)
       throws Dmm4jException {
-    final var request =
+    val request =
         HttpRequest.newBuilder()
             .GET()
             .uri(this.buildURI(pathSegment, buildQueryFunc.apply(parameter)))
             .build();
 
     final var client = HttpClient.newHttpClient();
-
-    System.out.println(request);
 
     try {
       return client.send(request, HttpResponse.BodyHandlers.ofString());

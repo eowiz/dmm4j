@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import java.time.LocalDate;
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
@@ -71,36 +72,36 @@ public class ActressSearchResponse {
     String ruby;
 
     /** バスト. */
-    Integer bust;
+    @Nullable Integer bust;
 
     /** カップ数. */
     String cup;
 
     /** ウエスト. */
-    Integer waist;
+    @Nullable Integer waist;
 
     /** ヒップ. */
-    Integer hip;
+    @Nullable Integer hip;
 
     /** 身長. */
-    Integer height;
+    @Nullable Integer height;
 
     /** 誕生日. */
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    LocalDate birthday;
+    @Nullable LocalDate birthday;
 
     /** 血液型. */
-    String bloodType;
+    @Nullable String bloodType;
 
     /** 趣味. */
-    String hobby;
+    @Nullable String hobby;
 
     /** 出身地. */
-    String prefectures;
+    @Nullable String prefectures;
 
     /** 画像URL. */
-    @Nonnull
+    @Nullable
     @JsonProperty("imageURL")
     ImageUrl imageUrl;
 
