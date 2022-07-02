@@ -34,7 +34,6 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = 'com.github.suzumiyaaoba'
             artifactId = 'dmm4j'
-            version = '2.0.1-SNAPSHOT'
 
             from components.java
         }
