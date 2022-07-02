@@ -1,5 +1,5 @@
 name: Publish dmm4j library
-on: [ workflow_dispatch ]
+on:
   release:
     types: [created]
 jobs:
