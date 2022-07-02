@@ -2,6 +2,7 @@ package dmm4j;
 
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
@@ -68,7 +69,7 @@ public class GenreSearchResponse {
     @Nonnull String floorCode;
 
     /** ジャンル情報リスト. */
-    @Nonnull List<Genre> genre;
+    @Nullable List<Genre> genre;
   }
 
   /** ジャンル情報. */
@@ -84,9 +85,9 @@ public class GenreSearchResponse {
     @Nonnull String name;
 
     /** ジャンル名 (読み仮名). */
-    String ruby;
+    @Nonnull String ruby;
 
     /** リストページURL（アフィリエイトID付き）. */
-    String listUrl;
+    @Nullable String listUrl;
   }
 }

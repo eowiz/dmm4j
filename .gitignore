@@ -1,7 +1,7 @@
 Main.java
 
-# Created by https://www.toptal.com/developers/gitignore/api/java,maven,macos,intellij+all,eclipse,emacs,windows
-# Edit at https://www.toptal.com/developers/gitignore?templates=java,maven,macos,intellij+all,eclipse,emacs,windows
+# Created by https://www.toptal.com/developers/gitignore/api/java,maven,emacs,macos,eclipse,windows,intellij+all,gradle
+# Edit at https://www.toptal.com/developers/gitignore?templates=java,maven,emacs,macos,eclipse,windows,intellij+all,gradle
 
 ### Eclipse ###
 .metadata
@@ -312,4 +312,25 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/java,maven,macos,intellij+all,eclipse,emacs,windows
+### Gradle ###
+.gradle
+**/build/
+!src/**/build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Avoid ignore Gradle wrappper properties
+!gradle-wrapper.properties
+
+# Cache of project
+.gradletasknamecache
+
+# Eclipse Gradle plugin generated files
+# Eclipse Core
+# JDT-specific (Eclipse Java Development Tools)
+
+# End of https://www.toptal.com/developers/gitignore/api/java,maven,emacs,macos,eclipse,windows,intellij+all,gradle
