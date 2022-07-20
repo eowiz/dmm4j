@@ -2,12 +2,13 @@ plugins {
     id "java"
     id "idea"
     id "maven-publish"
-    id "io.freefair.lombok" version "6.5.0.2"
-    id "com.diffplug.spotless" version "6.7.2"
+    id "io.freefair.lombok" version "6.5.0.3"
+    id "com.diffplug.spotless" version "6.8.0"
+    id "com.github.ben-manes.versions" version "0.42.0"
 }
 
-group = "org.github.suzumiyaaoba"
-version = "2.0.1-SNAPSHOT"
+group = "com.github.suzumiyaaoba"
+version = getProperty("version")
 
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -45,6 +46,66 @@ publishing {
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
+
+class Version {
+
+    private int major
+    private int minor
+    private int patch
+
+    Version(String version) {
+        def (major, minor, patch) = version.replace("-SNAPSHOT", "").tokenize('.')
+        this.major = major.toInteger()
+        this.minor = minor.toInteger()
+        this.patch = patch.toInteger()
+    }
+
+    @SuppressWarnings("unused")
+    void bumpMajor() {
+        major += 1
+        minor = 0
+        patch = 0
+    }
+
+    @SuppressWarnings("unused")
+    void bumpMinor() {
+        minor += 1
+        patch = 0
+    }
+
+    @SuppressWarnings("unused")
+    void bumpPatch() {
+        patch += 1
+    }
+
+    String getName() { "$major.$minor.$patch" }
+}
+
+tasks.addRule("Pattern: bump<TYPE>Version") { String taskName ->
+    if (taskName.matches("bump(Major|Minor|Patch)Version")) {
+        task(taskName) {
+            doLast {
+                String type = (taskName - 'bump' - 'Version')
+
+                println "Bumping ${type.toLowerCase()} version…"
+
+                String oldVersionName = project.version
+
+                version = new Version(oldVersionName)
+                version."bump$type"()
+
+                String newVersionName = version.getName()
+
+                println "$oldVersionName → $newVersionName"
+
+                def updated = buildFile.getText()
+                updated = updated.replaceFirst("version = \"$oldVersionName\"", "version = \"$newVersionName\"")
+
+                buildFile.setText(updated)
             }
         }
     }

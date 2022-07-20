@@ -89,7 +89,8 @@ public class ActressSearchResponse {
     /** 誕生日. */
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Nullable LocalDate birthday;
+    @Nullable
+    LocalDate birthday;
 
     /** 血液型. */
     @Nullable String bloodType;
