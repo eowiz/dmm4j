@@ -1,14 +1,13 @@
 plugins {
-    id "java"
-    id "idea"
-    id "maven-publish"
-    id "io.freefair.lombok" version "6.5.0.3"
-    id "com.diffplug.spotless" version "6.8.0"
-    id "com.github.ben-manes.versions" version "0.42.0"
+    id 'java'
+    id 'idea'
+    id 'maven-publish'
+    id 'io.freefair.lombok' version '6.6.1'
+    id 'com.diffplug.spotless' version '6.12.0'
 }
 
-group = "com.github.suzumiyaaoba"
-version = getProperty("version")
+group = 'com.github.eowiz'
+version = '0.0.1-SNAPSHOT'
 
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -18,10 +17,17 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.konghq:unirest-java:3.13.10'
-    implementation 'com.konghq:unirest-objectmapper-jackson:3.13.10'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
+    implementation 'com.konghq:unirest-java:3.14.1'
+    implementation 'com.konghq:unirest-objectmapper-jackson:3.14.1'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.1'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+    testImplementation 'org.assertj:assertj-core:3.23.1'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 spotless {
@@ -33,7 +39,7 @@ spotless {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            groupId = 'com.github.suzumiyaaoba'
+            groupId = 'com.github.eowiz'
             artifactId = 'dmm4j'
 
             from components.java
@@ -41,8 +47,8 @@ publishing {
     }
     repositories {
         maven {
-            name = "GitHubPackages"
-            url = "https://maven.pkg.github.com/SuzumiyaAoba/dmm4j"
+            name = 'GitHubPackages'
+            url = 'https://maven.pkg.github.com/eowiz/dmm4j'
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
@@ -51,62 +57,3 @@ publishing {
     }
 }
 
-class Version {
-
-    private int major
-    private int minor
-    private int patch
-
-    Version(String version) {
-        def (major, minor, patch) = version.replace("-SNAPSHOT", "").tokenize('.')
-        this.major = major.toInteger()
-        this.minor = minor.toInteger()
-        this.patch = patch.toInteger()
-    }
-
-    @SuppressWarnings("unused")
-    void bumpMajor() {
-        major += 1
-        minor = 0
-        patch = 0
-    }
-
-    @SuppressWarnings("unused")
-    void bumpMinor() {
-        minor += 1
-        patch = 0
-    }
-
-    @SuppressWarnings("unused")
-    void bumpPatch() {
-        patch += 1
-    }
-
-    String getName() { "$major.$minor.$patch" }
-}
-
-tasks.addRule("Pattern: bump<TYPE>Version") { String taskName ->
-    if (taskName.matches("bump(Major|Minor|Patch)Version")) {
-        task(taskName) {
-            doLast {
-                String type = (taskName - 'bump' - 'Version')
-
-                println "Bumping ${type.toLowerCase()} version…"
-
-                String oldVersionName = project.version
-
-                version = new Version(oldVersionName)
-                version."bump$type"()
-
-                String newVersionName = version.getName()
-
-                println "$oldVersionName → $newVersionName"
-
-                def updated = buildFile.getText()
-                updated = updated.replaceFirst("version = \"$oldVersionName\"", "version = \"$newVersionName\"")
-
-                buildFile.setText(updated)
-            }
-        }
-    }
-}

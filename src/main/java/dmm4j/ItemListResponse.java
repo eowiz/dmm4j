@@ -87,13 +87,13 @@ public class ItemListResponse {
     @Nonnull String title;
 
     /** 収録時間 or ページ数. */
-    String volume;
+    @Nullable String volume;
 
     /** 巻数. */
-    String number;
+    @Nullable String number;
 
     /** レビュー. */
-    Review review;
+    @Nullable Review review;
 
     /** 商品ページURL. */
     @JsonProperty("URL")
@@ -103,25 +103,17 @@ public class ItemListResponse {
     @JsonProperty("affiliateURL")
     String affiliateUrl;
 
-    /** スマホ向け商品ページURL. */
-    @JsonProperty("URLsp")
-    String urlSp;
-
-    /** スマホ向けアフィリエイトリンクURL. */
-    @JsonProperty("affiliateURLsp")
-    String affiliateUrlSp;
-
     /** 画像URL. */
-    @Nonnull
     @JsonProperty("imageURL")
+    @Nonnull
     ImageUrl imageUrl;
 
     /** 立ち読みページURL. */
     @Nullable Tachiyomi tachiyomi;
 
     /** サンプル画像URL. */
-    @Nullable
     @JsonProperty("sampleImageURL")
+    @Nullable
     SampleImageUrl sampleImageUrl;
 
     /** サンプル動画URL. */
@@ -143,18 +135,25 @@ public class ItemListResponse {
 
     /** CD情報. */
     @JsonProperty("cdinfo")
+    @Nullable
     CdInfo cdInfo;
 
-    @Nullable
-    @JsonProperty("bandaiinfo")
-    BandaiInfo bandaiInfo;
-
     /** ISBN. */
-    String isbn;
+    @Nullable String isbn;
 
     /** JANコード. */
     @JsonProperty("jancode")
+    @Nullable
     String janCode;
+
+    /** メーカー品番. */
+    @Nullable String makerProduct;
+
+    /** 在庫状況（在庫数）. */
+    @Nullable String stock;
+
+    /** パンくずリスト. */
+    @Nullable Directory directory;
   }
 
   /** レビュー. */
@@ -167,7 +166,7 @@ public class ItemListResponse {
     int count;
 
     /** レビュー平均点. */
-    double average;
+    String average;
   }
 
   /** 画像URL. */
@@ -207,8 +206,11 @@ public class ItemListResponse {
   @Builder(toBuilder = true)
   public static class SampleImageUrl {
 
-    /** サンプル画像URL. */
+    /** サンプル画像（小）URL. */
     @Nonnull SampleS sampleS;
+
+    /** サンプル画像（大）URL */
+    @Nonnull SampleL sampleL;
   }
 
   /** サンプル（小）リスト. */
@@ -218,6 +220,16 @@ public class ItemListResponse {
   public static class SampleS {
 
     /** サンプル画像（小）. */
+    @Nonnull String[] image;
+  }
+
+  /** サンプル画像（大）リスト. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class SampleL {
+
+    /** サンプル画像（大）. */
     @Nonnull String[] image;
   }
 
@@ -287,6 +299,9 @@ public class ItemListResponse {
 
     /** 配信価格. */
     String price;
+
+    /** 配信価格（リスト）. */
+    String listPrice;
   }
 
   /** 商品詳細. */
@@ -313,8 +328,14 @@ public class ItemListResponse {
     /** 監督. */
     List<Director> director;
 
+    /** 製造者. */
+    List<Manufacture> manufacture;
+
     /** 作家、原作者、著者. */
     List<Author> author;
+
+    /** アーティスト. */
+    List<Artist> artist;
 
     /** レーベル. */
     List<Label> label;
@@ -336,7 +357,7 @@ public class ItemListResponse {
   public static class Genre {
 
     /** ジャンルID. */
-    @Nonnull String id;
+    int id;
 
     /** ジャンル名. */
     @Nonnull String name;
@@ -349,7 +370,7 @@ public class ItemListResponse {
   public static class Series {
 
     /** シリーズID. */
-    @Nonnull String id;
+    int id;
 
     /** シリーズ名. */
     @Nonnull String name;
@@ -362,7 +383,7 @@ public class ItemListResponse {
   public static class Maker {
 
     /** メーカーID. */
-    @Nonnull String id;
+    int id;
 
     /** メーカー名. */
     @Nonnull String name;
@@ -375,7 +396,7 @@ public class ItemListResponse {
   public static class Actor {
 
     /** 出演者ID. */
-    @Nonnull String id;
+    int id;
 
     /** 出演者名. */
     @Nonnull String name;
@@ -388,7 +409,7 @@ public class ItemListResponse {
   public static class Actress {
 
     /** 女優ID. */
-    @Nonnull String id;
+    int id;
 
     /** 女優名. */
     @Nonnull String name;
@@ -401,9 +422,22 @@ public class ItemListResponse {
   public static class Director {
 
     /** 監督ID. */
-    @Nonnull String id;
+    int id;
 
     /** 監督名. */
+    @Nonnull String name;
+  }
+
+  /** 製造者. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Manufacture {
+
+    /** 製造者ID. */
+    int id;
+
+    /** 製造者名. */
     @Nonnull String name;
   }
 
@@ -414,9 +448,22 @@ public class ItemListResponse {
   public static class Author {
 
     /** 作家、原作者、著者ID. */
-    @Nonnull String id;
+    int id;
 
     /** 作家、原作者、著者名. */
+    @Nonnull String name;
+  }
+
+  /** アーティスト. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Artist {
+
+    /** アーティストID. */
+    int id;
+
+    /** アーティスト名 */
     @Nonnull String name;
   }
 
@@ -427,7 +474,7 @@ public class ItemListResponse {
   public static class Label {
 
     /** レーベルID. */
-    @Nonnull String id;
+    int id;
 
     /** レーベル名. */
     @Nonnull String name;
@@ -440,7 +487,7 @@ public class ItemListResponse {
   public static class Type {
 
     /** タイプID. */
-    @Nonnull String id;
+    int id;
 
     /** タイプ名. */
     @Nonnull String name;
@@ -453,7 +500,7 @@ public class ItemListResponse {
   public static class Color {
 
     /** カラーID. */
-    @Nonnull String id;
+    int id;
 
     /** カラー名. */
     @Nonnull String name;
@@ -466,19 +513,10 @@ public class ItemListResponse {
   public static class Size {
 
     /** サイズID. */
-    @Nonnull String id;
+    int id;
 
     /** サイズ名. */
     @Nonnull String name;
-  }
-
-  @Jacksonized
-  @Value
-  @Builder(toBuilder = true)
-  public static class BandaiInfo {
-
-    @JsonProperty("titlecode")
-    String titleCode;
   }
 
   /** CD情報. */
@@ -489,5 +527,48 @@ public class ItemListResponse {
 
     /** アルバム、シングル. */
     String kind;
+  }
+
+  /** キャンペーンリスト. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Campaign {
+
+    /** キャンペーンリスト. */
+    List<Item> items;
+
+    /** キャンペーン. */
+    @Jacksonized
+    @Value
+    @Builder(toBuilder = true)
+    public static class Item {
+
+      /** 開始時刻. */
+      @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+      LocalDateTime dateBegin;
+
+      /** 終了時刻. */
+      @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+      LocalDateTime dateEnd;
+
+      /** タイトル. */
+      String title;
+    }
+  }
+
+  /** パンくずリスト. */
+  @Jacksonized
+  @Value
+  @Builder(toBuilder = true)
+  public static class Directory {
+
+    /** パンくずID. */
+    int id;
+
+    /** パンくず名. */
+    String name;
   }
 }

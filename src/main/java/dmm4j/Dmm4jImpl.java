@@ -31,7 +31,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 public final class Dmm4jImpl implements Dmm4j {
 
-  static Dmm4j INSTANCE = new Dmm4jImpl();
+  static final Dmm4j INSTANCE = new Dmm4jImpl();
 
   private static final String SCHEMA = "https";
 
@@ -403,7 +403,10 @@ public final class Dmm4jImpl implements Dmm4j {
 
     try {
       return client.send(request, HttpResponse.BodyHandlers.ofString());
-    } catch (IOException | InterruptedException e) {
+    } catch (IOException e) {
+      throw new Dmm4jException(e);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
       throw new Dmm4jException(e);
     }
   }

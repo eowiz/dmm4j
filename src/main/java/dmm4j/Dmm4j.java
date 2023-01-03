@@ -43,6 +43,11 @@ public interface Dmm4j {
     return Dmm4jImpl.INSTANCE;
   }
 
+  /**
+   * @param apiId APIID
+   * @param affiliateId AFFILIATE ID
+   * @return
+   */
   static Dmm4j getInstance(String apiId, String affiliateId) {
     return new Dmm4jImpl(apiId, affiliateId);
   }
