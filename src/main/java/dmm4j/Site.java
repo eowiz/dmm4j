@@ -1,7 +1,7 @@
 package dmm4j;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

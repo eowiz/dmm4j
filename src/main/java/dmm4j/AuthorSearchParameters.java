@@ -1,6 +1,6 @@
 package dmm4j;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;

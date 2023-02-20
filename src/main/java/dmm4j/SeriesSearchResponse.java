@@ -1,6 +1,6 @@
 package dmm4j;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;

@@ -1,9 +1,9 @@
 package dmm4j;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.time.LocalDateTime;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
