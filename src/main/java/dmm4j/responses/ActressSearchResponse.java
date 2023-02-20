@@ -1,9 +1,10 @@
-package dmm4j;
+package dmm4j.responses;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import dmm4j.parameters.ActressSearchParameters;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import java.time.LocalDate;

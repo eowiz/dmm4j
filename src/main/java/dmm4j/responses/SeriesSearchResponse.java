@@ -1,39 +1,38 @@
-package dmm4j;
+package dmm4j.responses;
 
+import dmm4j.parameters.SeriesSearchParameters;
 import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
-import java.util.List;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-/** DMM.com ジャンル検索API レスポンス. */
+/** DMM.com シリーズ検索API レスポンス. */
 @Jacksonized
 @Value
 @Builder(toBuilder = true)
-public class GenreSearchResponse {
+public class SeriesSearchResponse {
 
-  /** リクエストパラメータ. */
-  @Nonnull GenreSearchRequest request;
+  /** リケストパラメータ. */
+  @Nonnull SeriesSearchRequest request;
 
   /** レスポンスフィールド. */
-  @Nonnull GenreSearchResult result;
+  @Nonnull SeriesSearchResult result;
 
   /** リクエストパラメータ. */
   @Jacksonized
   @Value
   @Builder(toBuilder = true)
-  public static class GenreSearchRequest {
+  public static class SeriesSearchRequest {
 
     /** リクエストパラメータ. */
-    @Nonnull GenreSearchParameters parameters;
+    @Nonnull SeriesSearchParameters parameters;
   }
 
   /** レスポンスフィールド. */
   @Jacksonized
   @Value
   @Builder(toBuilder = true)
-  public static class GenreSearchResult {
+  public static class SeriesSearchResult {
 
     /** ステータスコード. */
     @Nonnull String status;
@@ -68,26 +67,26 @@ public class GenreSearchResponse {
     /** フロアコード. */
     @Nonnull String floorCode;
 
-    /** ジャンル情報リスト. */
-    @Nullable List<Genre> genre;
+    /** シリーズ情報. */
+    @Nonnull Series series;
   }
 
-  /** ジャンル情報. */
+  /** シリーズ情報. */
   @Jacksonized
   @Value
   @Builder(toBuilder = true)
-  public static class Genre {
+  public static class Series {
 
-    /** ジャンルID. */
-    @Nonnull String genreId;
+    /** シリーズID. */
+    @Nonnull String seriesId;
 
-    /** ジャンル名. */
+    /** シリーズ名. */
     @Nonnull String name;
 
-    /** ジャンル名 (読み仮名). */
-    @Nonnull String ruby;
+    /** シリーズ名（読み仮名）. */
+    String ruby;
 
     /** リストページURL（アフィリエイトID付き）. */
-    @Nullable String listUrl;
+    String listUrl;
   }
 }

@@ -1,16 +1,17 @@
-package dmm4j;
+package dmm4j.parameters;
 
-import jakarta.annotation.Nonnull;
+import dmm4j.Output;
 import jakarta.annotation.Nullable;
 import lombok.Builder;
+import lombok.NonNull;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-/** DMM.com メーカー検索API パラメータ. */
+/** DMM.com シリーズ検索API リクエストパラメータ. */
 @Jacksonized
 @Value
 @Builder(toBuilder = true)
-public class MakerSearchParameters {
+public class SeriesSearchParameters {
 
   /** API ID. */
   @Nullable String apiId;
@@ -19,9 +20,9 @@ public class MakerSearchParameters {
   @Nullable String affiliateId;
 
   /** フロアID. */
-  @Nonnull String floorId;
+  @NonNull String floorId;
 
-  /** 頭文字(50音). */
+  /** 頭文字（50音）. */
   @Nullable String initial;
 
   /** 取得件数. */
@@ -31,7 +32,7 @@ public class MakerSearchParameters {
   @Nullable Integer offset;
 
   /** 出力形式. */
-  @Nullable String output;
+  @Nullable Output output;
 
   /** コールバック. */
   @Nullable String callback;

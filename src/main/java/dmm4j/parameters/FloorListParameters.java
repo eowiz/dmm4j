@@ -1,5 +1,6 @@
-package dmm4j;
+package dmm4j.parameters;
 
+import dmm4j.Output;
 import jakarta.annotation.Nullable;
 import lombok.Builder;
 import lombok.Value;
@@ -18,7 +19,7 @@ public class FloorListParameters {
   @Nullable String affiliateId;
 
   /** 出力形式. */
-  @Nullable String output;
+  @Nullable Output output;
 
   /** コールバック. */
   @Nullable String callback;

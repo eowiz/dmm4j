@@ -1,5 +1,6 @@
-package dmm4j;
+package dmm4j.responses;
 
+import dmm4j.parameters.MakerSearchParameters;
 import jakarta.annotation.Nonnull;
 import java.util.List;
 import lombok.Builder;

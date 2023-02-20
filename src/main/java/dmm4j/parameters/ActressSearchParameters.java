@@ -1,10 +1,11 @@
-package dmm4j;
+package dmm4j.parameters;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import dmm4j.Output;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import java.time.LocalDate;
@@ -81,7 +82,7 @@ public class ActressSearchParameters {
   @Nullable Sort sort;
 
   /** 出力形式. */
-  @Nullable String output;
+  @Nullable Output output;
 
   /** コールバック. */
   @Nullable String callback;

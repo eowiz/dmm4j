@@ -1,6 +1,8 @@
-package dmm4j;
+package dmm4j.parameters;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import dmm4j.Output;
+import dmm4j.Site;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import java.time.LocalDateTime;
@@ -111,7 +113,7 @@ public class ItemListParameters {
   @Nullable MonoStock monoStock;
 
   /** 出力形式. */
-  @Nullable String output;
+  @Nullable Output output;
 
   /** コールバック. */
   @Nullable String callback;

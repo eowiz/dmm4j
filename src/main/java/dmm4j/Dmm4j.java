@@ -1,6 +1,20 @@
 package dmm4j;
 
 import dmm4j.exception.Dmm4jException;
+import dmm4j.parameters.ActressSearchParameters;
+import dmm4j.parameters.AuthorSearchParameters;
+import dmm4j.parameters.FloorListParameters;
+import dmm4j.parameters.GenreSearchParameters;
+import dmm4j.parameters.ItemListParameters;
+import dmm4j.parameters.MakerSearchParameters;
+import dmm4j.parameters.SeriesSearchParameters;
+import dmm4j.responses.ActressSearchResponse;
+import dmm4j.responses.AuthorSearchResponse;
+import dmm4j.responses.FloorListResponse;
+import dmm4j.responses.GenreSearchResponse;
+import dmm4j.responses.ItemListResponse;
+import dmm4j.responses.MakerSearchResponse;
+import dmm4j.responses.SeriesSearchResponse;
 import java.net.http.HttpResponse;
 
 public interface Dmm4j {
