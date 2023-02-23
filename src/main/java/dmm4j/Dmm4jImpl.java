@@ -89,7 +89,7 @@ public final class Dmm4jImpl implements Dmm4j {
       throws Dmm4jException {
     val nameValuePairs =
         parameters
-            .map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue()))
+        .map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue()))
             .collect(Collectors.<NameValuePair>toList());
 
     try {
@@ -158,7 +158,7 @@ public final class Dmm4jImpl implements Dmm4j {
                 "mono_stock",
                 Optional.ofNullable(parameters.getMonoStock())
                     .map(ItemListParameters.MonoStock::getValue)),
-            Map.entry("output", Optional.ofNullable(parameters.getOutput())),
+            Map.entry("output", Optional.ofNullable(parameters.getOutput().getValue())),
             Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
         .filter(entry -> entry.getValue().isPresent())
         .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
@@ -254,7 +254,7 @@ public final class Dmm4jImpl implements Dmm4j {
                 "sort",
                 Optional.ofNullable(parameters.getSort())
                     .map(ActressSearchParameters.Sort::getValue)),
-            Map.entry("output", Optional.ofNullable(parameters.getOutput())),
+            Map.entry("output", Optional.ofNullable(parameters.getOutput().getValue())),
             Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
         .filter(entry -> entry.getValue().isPresent())
         .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
@@ -290,7 +290,7 @@ public final class Dmm4jImpl implements Dmm4j {
             Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
             Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
             Map.entry("offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
-            Map.entry("output", Optional.ofNullable(parameters.getOutput())),
+            Map.entry("output", Optional.ofNullable(parameters.getOutput().getValue())),
             Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
         .filter(entry -> entry.getValue().isPresent())
         .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
@@ -326,7 +326,7 @@ public final class Dmm4jImpl implements Dmm4j {
             Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
             Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
             Map.entry("offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
-            Map.entry("output", Optional.ofNullable(parameters.getOutput())),
+            Map.entry("output", Optional.ofNullable(parameters.getOutput().toString())),
             Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
         .filter(entry -> entry.getValue().isPresent())
         .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
@@ -362,7 +362,7 @@ public final class Dmm4jImpl implements Dmm4j {
             Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
             Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
             Map.entry("offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
-            Map.entry("output", Optional.ofNullable(parameters.getOutput())),
+            Map.entry("output", Optional.ofNullable(parameters.getOutput().getValue())),
             Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
         .filter(entry -> entry.getValue().isPresent())
         .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
@@ -398,7 +398,7 @@ public final class Dmm4jImpl implements Dmm4j {
             Map.entry("initial", Optional.ofNullable(parameters.getInitial())),
             Map.entry("hits", Optional.ofNullable(parameters.getHits()).map(Objects::toString)),
             Map.entry("offset", Optional.ofNullable(parameters.getOffset()).map(Objects::toString)),
-            Map.entry("output", Optional.ofNullable(parameters.getOutput())),
+            Map.entry("output", Optional.ofNullable(parameters.getOutput().toString())),
             Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
         .filter(entry -> entry.getValue().isPresent())
         .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
