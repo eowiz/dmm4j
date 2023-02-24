@@ -98,7 +98,8 @@ public class ItemListResponse {
 
     /** 商品ページURL. */
     @JsonProperty("URL")
-    @Nullable String url;
+    @Nullable
+    String url;
 
     /** アフィリエイトリンクURL. */
     @JsonProperty("affiliateURL")
@@ -198,11 +199,13 @@ public class ItemListResponse {
 
     /** 立ち読みページURL. */
     @JsonProperty("URL")
-    @Nonnull String url;
+    @Nonnull
+    String url;
 
     /** 立ち読みアフィリエイトリンクURL. */
     @JsonProperty("affiliateURL")
-    @Nonnull String affiliateUrl;
+    @Nonnull
+    String affiliateUrl;
   }
 
   /** サンプル画像URL. */
@@ -246,19 +249,23 @@ public class ItemListResponse {
 
     /** 476x306. */
     @JsonProperty("size_476_306")
-    @Nullable String size476x306;
+    @Nullable
+    String size476x306;
 
     /** 560x360. */
     @JsonProperty("size_560_360")
-    @Nullable String size560x360;
+    @Nullable
+    String size560x360;
 
     /** 644x414. */
     @JsonProperty("size_644_414")
-    @Nullable String size644x414;
+    @Nullable
+    String size644x414;
 
     /** 720x480. */
     @JsonProperty("size_720_480")
-    @Nullable String size720x480;
+    @Nullable
+    String size720x480;
 
     /** PC対応しているか. */
     int pcFlag;

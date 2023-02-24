@@ -89,7 +89,7 @@ public final class Dmm4jImpl implements Dmm4j {
       throws Dmm4jException {
     val nameValuePairs =
         parameters
-        .map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue()))
+            .map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue()))
             .collect(Collectors.<NameValuePair>toList());
 
     try {

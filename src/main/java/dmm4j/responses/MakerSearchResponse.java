@@ -2,6 +2,7 @@ package dmm4j.responses;
 
 import dmm4j.parameters.MakerSearchParameters;
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.util.List;
 import lombok.Builder;
 import lombok.Value;
@@ -39,13 +40,13 @@ public class MakerSearchResponse {
     @Nonnull String status;
 
     /** 取得件数. */
-    @Nonnull Integer resultCount;
+    @Nonnull int resultCount;
 
     /** 全体件数. */
-    @Nonnull Integer totalCount;
+    @Nonnull int totalCount;
 
     /** 検索開始位置. */
-    @Nonnull Integer firstPosition;
+    @Nonnull int firstPosition;
 
     /** サイト名. */
     @Nonnull String siteName;
@@ -85,9 +86,12 @@ public class MakerSearchResponse {
     @Nonnull String name;
 
     /** メーカー名（読み仮名）. */
-    String ruby;
+    @Nonnull String ruby;
 
     /** リストページURL（アフィリエイトID付き）. */
-    String listUrl;
+    @Nullable String listUrl;
+
+    /** 著者名. */
+    @Nullable String authorName;
   }
 }

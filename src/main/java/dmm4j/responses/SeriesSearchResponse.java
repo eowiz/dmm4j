@@ -2,6 +2,7 @@ package dmm4j.responses;
 
 import dmm4j.parameters.SeriesSearchParameters;
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
@@ -84,9 +85,9 @@ public class SeriesSearchResponse {
     @Nonnull String name;
 
     /** シリーズ名（読み仮名）. */
-    String ruby;
+    @Nonnull String ruby;
 
     /** リストページURL（アフィリエイトID付き）. */
-    String listUrl;
+    @Nullable String listUrl;
   }
 }
