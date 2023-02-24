@@ -10,11 +10,21 @@
   <name>dmm4j</name>
   <url>https://github.com/eowiz/dmm4j</url>
 
+  <distributionManagement>
+    <repository>
+      <id>internal.repo</id>
+      <name>Temporary Repository</name>
+      <url>file://${project.basedir}/mvn-repo</url>
+    </repository>
+  </distributionManagement>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.complier.source>17</maven.complier.source>
     <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.release>17</maven.compiler.release>
+
+    <github.global.server>github</github.global.server>
   </properties>
 
   <dependencies>
@@ -64,7 +74,7 @@
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-plugin-plugin</artifactId>
+          <artifactId>maven-compiler-plugin</artifactId>
           <version>3.10.1</version>
         </plugin>
       </plugins>
@@ -74,6 +84,45 @@
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
         <version>2.33.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.12.1</version>
+        <configuration>
+          <locales>ja</locales>
+          <inputEncoding>UTF-8</inputEncoding>
+          <outputEncoding>UTF-8</outputEncoding>
+          <outputDirectory>mvn-repo</outputDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.4.1</version>
+      </plugin>
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.12</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>site</phase>
+            <configuration>
+              <server>github</server>
+              <repositoryName>dmm4j</repositoryName>
+              <repositoryOwner>eowiz</repositoryOwner>
+              <message>site</message>
+              <outputDirectory>mvn-repo</outputDirectory>
+              <branch>refs/heads/main</branch>
+              <path></path>
+              <merge>true</merge>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
