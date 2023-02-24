@@ -1,4 +1,4 @@
-name: Publish package to GitHub Packages
+name: Publish package to GitHub Pages
 on:
   push:
     branches:
@@ -17,7 +17,12 @@ jobs:
           distribution: 'adopt'
       - uses: s4u/maven-settings-action@v2.8.0
         with:
-          servers: '[{ "id": "github", "password": "${{ secrets.MAVEN_GITHUB_TOKEN }}" }]'
+          servers: |
+            [{ 
+                "id": "github-pages",
+                "username": "${{ github.actor }}",
+                "password": "${{ secrets.MAVEN_GITHUB_TOKEN }}"  
+            }]
       - name: Publish package
         run: ./mvnw clean compile deploy site
 
