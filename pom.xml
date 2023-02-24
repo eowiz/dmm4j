@@ -118,7 +118,7 @@
               <message>site</message>
               <outputDirectory>mvn-repo</outputDirectory>
               <branch>refs/heads/main</branch>
-              <path></path>
+              <path>docs</path>
               <merge>true</merge>
             </configuration>
           </execution>
