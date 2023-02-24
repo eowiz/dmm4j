@@ -42,7 +42,7 @@ public class ItemListResponse {
   public static class ItemListResult {
 
     /** ステータスコード. */
-    @Nonnull String status;
+    @Nonnull int status;
 
     /** 取得件数. */
     int resultCount;
@@ -98,7 +98,7 @@ public class ItemListResponse {
 
     /** 商品ページURL. */
     @JsonProperty("URL")
-    String url;
+    @Nullable String url;
 
     /** アフィリエイトリンクURL. */
     @JsonProperty("affiliateURL")
@@ -106,7 +106,7 @@ public class ItemListResponse {
 
     /** 画像URL. */
     @JsonProperty("imageURL")
-    @Nonnull
+    @Nullable
     ImageUrl imageUrl;
 
     /** 立ち読みページURL. */
@@ -125,6 +125,9 @@ public class ItemListResponse {
     /** 価格. */
     @Nonnull Prices prices;
 
+    /** キャンペーン. */
+    @Nullable List<Campaign> campaign;
+
     /** 発売日、配信開始日、貸出開始日. */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -132,6 +135,7 @@ public class ItemListResponse {
 
     /** 商品詳細. */
     @JsonProperty("iteminfo")
+    @Nullable
     ItemInfo itemInfo;
 
     /** CD情報. */
@@ -167,7 +171,7 @@ public class ItemListResponse {
     int count;
 
     /** レビュー平均点. */
-    String average;
+    @Nullable String average;
   }
 
   /** 画像URL. */
@@ -177,13 +181,13 @@ public class ItemListResponse {
   public static class ImageUrl {
 
     /** リストページ用. */
-    String list;
+    @Nonnull String list;
 
     /** 末端用（小）. */
-    String small;
+    @Nullable String small;
 
     /** 末端用（大）. */
-    String large;
+    @Nonnull String large;
   }
 
   /** 立ち読みページ. */
@@ -194,11 +198,11 @@ public class ItemListResponse {
 
     /** 立ち読みページURL. */
     @JsonProperty("URL")
-    String url;
+    @Nonnull String url;
 
     /** 立ち読みアフィリエイトリンクURL. */
     @JsonProperty("affiliateURL")
-    String affiliateUrl;
+    @Nonnull String affiliateUrl;
   }
 
   /** サンプル画像URL. */
@@ -211,7 +215,7 @@ public class ItemListResponse {
     @Nonnull SampleS sampleS;
 
     /** サンプル画像（大）URL */
-    @Nonnull SampleL sampleL;
+    @Nullable SampleL sampleL;
   }
 
   /** サンプル（小）リスト. */
@@ -242,19 +246,19 @@ public class ItemListResponse {
 
     /** 476x306. */
     @JsonProperty("size_476_306")
-    String size476x306;
+    @Nullable String size476x306;
 
     /** 560x360. */
     @JsonProperty("size_560_360")
-    String size560x360;
+    @Nullable String size560x360;
 
     /** 644x414. */
     @JsonProperty("size_644_414")
-    String size644x414;
+    @Nullable String size644x414;
 
     /** 720x480. */
     @JsonProperty("size_720_480")
-    String size720x480;
+    @Nullable String size720x480;
 
     /** PC対応しているか. */
     int pcFlag;
@@ -274,6 +278,9 @@ public class ItemListResponse {
 
     /** 定価. */
     String listPrice;
+
+    /** 不明. */
+    String priceAll;
 
     /** 配信リスト. */
     Deliveries deliveries;
@@ -312,43 +319,43 @@ public class ItemListResponse {
   public static class ItemInfo {
 
     /** ジャンル. */
-    List<Genre> genre;
+    @Nullable List<Genre> genre;
 
     /** シリーズ. */
-    List<Series> series;
+    @Nullable List<Series> series;
 
     /** メーカー. */
-    List<Maker> maker;
+    @Nullable List<Maker> maker;
 
     /** 出演者（一般作品のみ）. */
-    List<Actor> actor;
+    @Nullable List<Actor> actor;
 
     /** 女優（アダルト作品のみ）. */
-    List<Actress> actress;
+    @Nullable List<Actress> actress;
 
     /** 監督. */
-    List<Director> director;
+    @Nullable List<Director> director;
 
     /** 製造者. */
-    List<Manufacture> manufacture;
+    @Nullable List<Manufacture> manufacture;
 
     /** 作家、原作者、著者. */
-    List<Author> author;
+    @Nullable List<Author> author;
 
     /** アーティスト. */
-    List<Artist> artist;
+    @Nullable List<Artist> artist;
 
     /** レーベル. */
-    List<Label> label;
+    @Nullable List<Label> label;
 
     /** タイプ. */
-    List<Type> type;
+    @Nullable List<Type> type;
 
     /** カラー. */
-    List<Color> color;
+    @Nullable List<Color> color;
 
     /** サイズ. */
-    List<Size> size;
+    @Nullable List<Size> size;
   }
 
   /** ジャンル. */
@@ -362,6 +369,8 @@ public class ItemListResponse {
 
     /** ジャンル名. */
     @Nonnull String name;
+
+    @Nullable String ruby;
   }
 
   /** シリーズ. */
@@ -375,6 +384,8 @@ public class ItemListResponse {
 
     /** シリーズ名. */
     @Nonnull String name;
+
+    @Nullable String ruby;
   }
 
   /** メーカー. */
@@ -388,6 +399,8 @@ public class ItemListResponse {
 
     /** メーカー名. */
     @Nonnull String name;
+
+    @Nullable String ruby;
   }
 
   /** 出演者. */
@@ -401,6 +414,8 @@ public class ItemListResponse {
 
     /** 出演者名. */
     @Nonnull String name;
+
+    @Nullable String ruby;
   }
 
   /** 女優. */
@@ -427,6 +442,8 @@ public class ItemListResponse {
 
     /** 監督名. */
     @Nonnull String name;
+
+    @Nullable String ruby;
   }
 
   /** 製造者. */
@@ -440,6 +457,8 @@ public class ItemListResponse {
 
     /** 製造者名. */
     @Nonnull String name;
+
+    @Nullable String ruby;
   }
 
   /** 作家、原作者、著者. */
@@ -453,6 +472,8 @@ public class ItemListResponse {
 
     /** 作家、原作者、著者名. */
     @Nonnull String name;
+
+    @Nullable String ruby;
   }
 
   /** アーティスト. */
@@ -466,6 +487,8 @@ public class ItemListResponse {
 
     /** アーティスト名 */
     @Nonnull String name;
+
+    @Nullable String ruby;
   }
 
   /** レーベル. */
@@ -479,6 +502,8 @@ public class ItemListResponse {
 
     /** レーベル名. */
     @Nonnull String name;
+
+    @Nullable String ruby;
   }
 
   /** タイプ. */
@@ -492,6 +517,8 @@ public class ItemListResponse {
 
     /** タイプ名. */
     @Nonnull String name;
+
+    @Nullable String ruby;
   }
 
   /** カラー. */
@@ -505,6 +532,8 @@ public class ItemListResponse {
 
     /** カラー名. */
     @Nonnull String name;
+
+    @Nullable String ruby;
   }
 
   /** サイズ. */
@@ -518,6 +547,8 @@ public class ItemListResponse {
 
     /** サイズ名. */
     @Nonnull String name;
+
+    @Nullable String ruby;
   }
 
   /** CD情報. */
@@ -536,28 +567,18 @@ public class ItemListResponse {
   @Builder(toBuilder = true)
   public static class Campaign {
 
-    /** キャンペーンリスト. */
-    List<Item> items;
+    /** 開始時刻. */
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime dateBegin;
 
-    /** キャンペーン. */
-    @Jacksonized
-    @Value
-    @Builder(toBuilder = true)
-    public static class Item {
+    /** 終了時刻. */
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime dateEnd;
 
-      /** 開始時刻. */
-      @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-      LocalDateTime dateBegin;
-
-      /** 終了時刻. */
-      @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-      LocalDateTime dateEnd;
-
-      /** タイトル. */
-      String title;
-    }
+    /** タイトル. */
+    String title;
   }
 
   /** パンくずリスト. */
@@ -570,6 +591,6 @@ public class ItemListResponse {
     int id;
 
     /** パンくず名. */
-    String name;
+    @Nonnull String name;
   }
 }
