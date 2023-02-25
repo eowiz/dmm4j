@@ -42,7 +42,7 @@ public class ItemListResponse {
   public static class ItemListResult {
 
     /** ステータスコード. */
-    @Nonnull int status;
+    int status;
 
     /** 取得件数. */
     int resultCount;
@@ -119,8 +119,8 @@ public class ItemListResponse {
     SampleImageUrl sampleImageUrl;
 
     /** サンプル動画URL. */
-    @Nullable
     @JsonProperty("sampleMovieURL")
+    @Nullable
     SampleMovieUrl sampleMovieUrl;
 
     /** 価格. */
@@ -228,7 +228,7 @@ public class ItemListResponse {
   public static class SampleS {
 
     /** サンプル画像（小）. */
-    @Nonnull String[] image;
+    @Nonnull List<String> image;
   }
 
   /** サンプル画像（大）リスト. */
