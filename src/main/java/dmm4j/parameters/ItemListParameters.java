@@ -6,6 +6,7 @@ import dmm4j.Site;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -101,7 +102,8 @@ public class ItemListParameters {
   @Nullable Article article;
 
   /** 絞り込みID. */
-  @Nullable String articleId;
+  @Nullable
+  List<String> articleId;
 
   /** 発売日絞り込み. */
   @Nullable LocalDateTime gteData;

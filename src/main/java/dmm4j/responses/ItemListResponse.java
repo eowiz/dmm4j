@@ -10,6 +10,7 @@ import jakarta.annotation.Nullable;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
+import lombok.NonNull;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
@@ -103,7 +104,7 @@ public class ItemListResponse {
 
     /** アフィリエイトリンクURL. */
     @JsonProperty("affiliateURL")
-    String affiliateUrl;
+    @Nullable String affiliateUrl;
 
     /** 画像URL. */
     @JsonProperty("imageURL")
@@ -132,7 +133,7 @@ public class ItemListResponse {
     /** 発売日、配信開始日、貸出開始日. */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime date;
+    @Nullable LocalDateTime date;
 
     /** 商品詳細. */
     @JsonProperty("iteminfo")
@@ -281,16 +282,16 @@ public class ItemListResponse {
   public static class Prices {
 
     /** 金額. */
-    String price;
+    @NonNull String price;
 
     /** 定価. */
-    String listPrice;
+    @Nullable String listPrice;
 
     /** 不明. */
-    String priceAll;
+    @Nullable String priceAll;
 
     /** 配信リスト. */
-    Deliveries deliveries;
+    @Nullable Deliveries deliveries;
   }
 
   /** 配信リスト. */
@@ -310,13 +311,13 @@ public class ItemListResponse {
   public static class Delivery {
 
     /** 配信タイプ. */
-    String type;
+    @Nonnull String type;
 
     /** 配信価格. */
-    String price;
+    @Nonnull String price;
 
     /** 配信価格（リスト）. */
-    String listPrice;
+    @Nonnull String listPrice;
   }
 
   /** 商品詳細. */
@@ -377,6 +378,7 @@ public class ItemListResponse {
     /** ジャンル名. */
     @Nonnull String name;
 
+    /** ルビ. */
     @Nullable String ruby;
   }
 
@@ -392,6 +394,7 @@ public class ItemListResponse {
     /** シリーズ名. */
     @Nonnull String name;
 
+    /** ルビ. */
     @Nullable String ruby;
   }
 
@@ -407,6 +410,7 @@ public class ItemListResponse {
     /** メーカー名. */
     @Nonnull String name;
 
+    /** ルビ. */
     @Nullable String ruby;
   }
 
@@ -422,6 +426,7 @@ public class ItemListResponse {
     /** 出演者名. */
     @Nonnull String name;
 
+    /** ルビ. */
     @Nullable String ruby;
   }
 
@@ -436,6 +441,9 @@ public class ItemListResponse {
 
     /** 女優名. */
     @Nonnull String name;
+
+    /** ルビ. */
+    @Nullable String ruby;
   }
 
   /** 監督. */
@@ -450,6 +458,7 @@ public class ItemListResponse {
     /** 監督名. */
     @Nonnull String name;
 
+    /** ルビ. */
     @Nullable String ruby;
   }
 
@@ -465,6 +474,7 @@ public class ItemListResponse {
     /** 製造者名. */
     @Nonnull String name;
 
+    /** ルビ. */
     @Nullable String ruby;
   }
 
@@ -480,6 +490,7 @@ public class ItemListResponse {
     /** 作家、原作者、著者名. */
     @Nonnull String name;
 
+    /** ルビ. */
     @Nullable String ruby;
   }
 
@@ -495,6 +506,7 @@ public class ItemListResponse {
     /** アーティスト名 */
     @Nonnull String name;
 
+    /** ルビ. */
     @Nullable String ruby;
   }
 
@@ -510,6 +522,7 @@ public class ItemListResponse {
     /** レーベル名. */
     @Nonnull String name;
 
+    /** ルビ. */
     @Nullable String ruby;
   }
 
@@ -525,6 +538,7 @@ public class ItemListResponse {
     /** タイプ名. */
     @Nonnull String name;
 
+    /** ルビ. */
     @Nullable String ruby;
   }
 
@@ -540,6 +554,7 @@ public class ItemListResponse {
     /** カラー名. */
     @Nonnull String name;
 
+    /** ルビ. */
     @Nullable String ruby;
   }
 
@@ -555,6 +570,7 @@ public class ItemListResponse {
     /** サイズ名. */
     @Nonnull String name;
 
+    /** ルビ. */
     @Nullable String ruby;
   }
 
@@ -565,7 +581,7 @@ public class ItemListResponse {
   public static class CdInfo {
 
     /** アルバム、シングル. */
-    String kind;
+    @Nullable String kind;
   }
 
   /** キャンペーンリスト. */
@@ -577,11 +593,13 @@ public class ItemListResponse {
     /** 開始時刻. */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+        @Nonnull
     LocalDateTime dateBegin;
 
     /** 終了時刻. */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+        @Nullable
     LocalDateTime dateEnd;
 
     /** タイトル. */

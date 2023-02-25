@@ -2,6 +2,7 @@ package dmm4j.responses;
 
 import dmm4j.parameters.AuthorSearchParameters;
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.util.List;
 import lombok.Builder;
 import lombok.Value;
@@ -85,12 +86,12 @@ public class AuthorSearchResponse {
     @Nonnull String name;
 
     /** 作者名（読み仮名）. */
-    String ruby;
+    @Nonnull String ruby;
 
     /** 作者別名. */
-    String authorName;
+    @Nullable String authorName;
 
     /** リストページURL（アフィリエイトID付き）. */
-    String listUrl;
+    @Nullable String listUrl;
   }
 }
