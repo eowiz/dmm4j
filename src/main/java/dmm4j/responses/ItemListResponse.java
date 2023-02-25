@@ -238,7 +238,7 @@ public class ItemListResponse {
   public static class SampleL {
 
     /** サンプル画像（大）. */
-    @Nonnull String[] image;
+    @Nonnull List<String> image;
   }
 
   /** サンプル動画URL. */
