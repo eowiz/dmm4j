@@ -115,7 +115,7 @@
               <server>github</server>
               <repositoryName>dmm4j</repositoryName>
               <repositoryOwner>eowiz</repositoryOwner>
-              <message>Generate site</message>
+              <message>[skip ci] Generate site</message>
               <outputDirectory>mvn-repo</outputDirectory>
               <branch>refs/heads/main</branch>
               <path>docs</path>
