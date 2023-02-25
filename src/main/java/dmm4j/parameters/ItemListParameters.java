@@ -84,7 +84,7 @@ public class ItemListParameters {
    *
    * <p>商品に振られている content_id.
    */
-  @Nullable String cid;
+  @Nullable List<String> cid;
 
   /**
    * 絞り込み項目.
@@ -103,7 +103,7 @@ public class ItemListParameters {
 
   /** 絞り込みID. */
   @Nullable
-  List<String> articleId;
+  String articleId;
 
   /** 発売日絞り込み. */
   @Nullable LocalDateTime gteData;

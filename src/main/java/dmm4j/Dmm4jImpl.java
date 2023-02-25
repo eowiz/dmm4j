@@ -27,6 +27,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -90,7 +91,8 @@ public final class Dmm4jImpl implements Dmm4j {
     val nameValuePairs =
         parameters
             .map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue()))
-            .collect(Collectors.<NameValuePair>toList());
+            .map(NameValuePair.class::cast)
+            .toList();
 
     try {
       return new URIBuilder()
@@ -123,10 +125,12 @@ public final class Dmm4jImpl implements Dmm4j {
   @Nonnull
   private Stream<Map.Entry<String, String>> buildQuery(ItemListParameters parameters) {
     return Stream.of(
+        Stream.of(
             Map.entry(
                 "api_id",
                 Optional.ofNullable(parameters.getApiId())
-                    .or(() -> Optional.ofNullable(this.apiId))),
+                    .or(() -> Optional.ofNullable(this.apiId))
+                    ),
             Map.entry(
                 "affiliate_id",
                 Optional.ofNullable(parameters.getAffiliateId())
@@ -140,7 +144,6 @@ public final class Dmm4jImpl implements Dmm4j {
                 "sort",
                 Optional.ofNullable(parameters.getSort()).map(ItemListParameters.Sort::getValue)),
             Map.entry("keyword", Optional.ofNullable(parameters.getKeyword())),
-            Map.entry("cid", Optional.ofNullable(parameters.getCid())),
             Map.entry(
                 "article",
                 Optional.ofNullable(parameters.getArticle())
@@ -159,7 +162,11 @@ public final class Dmm4jImpl implements Dmm4j {
                 Optional.ofNullable(parameters.getMonoStock())
                     .map(ItemListParameters.MonoStock::getValue)),
             Map.entry("output", Optional.ofNullable(parameters.getOutput()).map(Output::getValue)),
-            Map.entry("callback", Optional.ofNullable(parameters.getCallback())))
+            Map.entry("callback", Optional.ofNullable(parameters.getCallback()))
+        ), Optional.ofNullable(parameters.getCid()).stream()
+                .flatMap(Collection::stream)
+                .map(cid -> Map.entry("cid[]", Optional.of(cid))))
+        .flatMap(Function.identity())
         .filter(entry -> entry.getValue().isPresent())
         .map(entry -> Map.entry(entry.getKey(), entry.getValue().get()));
   }
