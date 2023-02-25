@@ -3,21 +3,21 @@
   <groupId>io.github.eowiz</groupId>
   <artifactId>dmm4j</artifactId>
   <versioning>
-    <lastUpdated>20230225112417</lastUpdated>
+    <lastUpdated>20230225112646</lastUpdated>
     <snapshot>
-      <timestamp>20230225.112417</timestamp>
+      <timestamp>20230225.112646</timestamp>
       <buildNumber>1</buildNumber>
     </snapshot>
     <snapshotVersions>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>0.0.1-20230225.112417-1</value>
-        <updated>20230225112417</updated>
+        <value>0.0.1-20230225.112646-1</value>
+        <updated>20230225112646</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>jar</extension>
-        <value>0.0.1-20230225.112417-1</value>
-        <updated>20230225112417</updated>
+        <value>0.0.1-20230225.112646-1</value>
+        <updated>20230225112646</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
