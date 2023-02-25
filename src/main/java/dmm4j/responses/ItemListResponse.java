@@ -576,12 +576,12 @@ public class ItemListResponse {
 
     /** 開始時刻. */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     LocalDateTime dateBegin;
 
     /** 終了時刻. */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     LocalDateTime dateEnd;
 
     /** タイトル. */
