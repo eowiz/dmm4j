@@ -110,7 +110,7 @@ public final class Dmm4jImpl implements Dmm4j {
   public ItemListResponse getItemList(ItemListParameters parameters) throws Dmm4jException {
     val params = this.buildQuery(parameters);
 
-    return get(BASE_URL + "/ItemList", params, ItemListResponse.class)
+    return get("ItemList", params, ItemListResponse.class)
         .getBody();
   }
 
@@ -173,7 +173,7 @@ public final class Dmm4jImpl implements Dmm4j {
   public FloorListResponse getFloorList(FloorListParameters parameters) throws Dmm4jException {
     val params = this.buildQuery(parameters);
 
-    return get(BASE_URL + "/FloorList", params, FloorListResponse.class)
+    return get("FloorList", params, FloorListResponse.class)
         .getBody();
   }
 
@@ -267,7 +267,7 @@ public final class Dmm4jImpl implements Dmm4j {
       throws Dmm4jException {
     val params = this.buildQuery(parameters);
 
-    return get(BASE_URL + "/GenreSearch", params, GenreSearchResponse.class)
+    return get("GenreSearch", params, GenreSearchResponse.class)
         .getBody();
   }
 
@@ -302,7 +302,7 @@ public final class Dmm4jImpl implements Dmm4j {
       throws Dmm4jException {
     val params = this.buildQuery(parameters);
 
-    return get(BASE_URL + "/MakerSearch", params, MakerSearchResponse.class)
+    return get("MakerSearch", params, MakerSearchResponse.class)
         .getBody();
   }
 
@@ -337,7 +337,7 @@ public final class Dmm4jImpl implements Dmm4j {
       throws Dmm4jException {
     val params = this.buildQuery(parameters);
 
-    return get(BASE_URL + "/SeriesSearch", params, SeriesSearchResponse.class)
+    return get("SeriesSearch", params, SeriesSearchResponse.class)
         .getBody();
   }
 
@@ -372,7 +372,7 @@ public final class Dmm4jImpl implements Dmm4j {
       throws Dmm4jException {
     val params = this.buildQuery(parameters);
 
-    return get(BASE_URL + "/AuthorSearch", params, AuthorSearchResponse.class)
+    return get("AuthorSearch", params, AuthorSearchResponse.class)
         .getBody();
   }
 
@@ -425,7 +425,7 @@ public final class Dmm4jImpl implements Dmm4j {
 
   private <T> kong.unirest.HttpResponse<T> get(String path, Stream<Map.Entry<String, String>> params, Class<T> clazz)
       throws Dmm4jException {
-    final var response = Unirest.get(BASE_URL + path)
+    final var response = Unirest.get(BASE_URL + "/" + path)
         .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
         .asObject(clazz);
 
