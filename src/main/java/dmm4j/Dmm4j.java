@@ -19,36 +19,36 @@ import java.net.http.HttpResponse;
 
 public interface Dmm4j {
 
-  ItemListResponse getItemList(ItemListParameters parameters);
+  ItemListResponse getItemList(ItemListParameters parameters) throws Dmm4jException;
 
   HttpResponse<String> getItemListRawResponse(ItemListParameters parameters) throws Dmm4jException;
 
-  FloorListResponse getFloorList(FloorListParameters parameters);
+  FloorListResponse getFloorList(FloorListParameters parameters) throws Dmm4jException;
 
   HttpResponse<String> getFloorListRawResponse(FloorListParameters parameters)
       throws Dmm4jException;
 
-  ActressSearchResponse getActressSearch(ActressSearchParameters parameters);
+  ActressSearchResponse getActressSearch(ActressSearchParameters parameters) throws Dmm4jException;
 
   HttpResponse<String> getActressSearchRawResponse(ActressSearchParameters parameters)
       throws Dmm4jException;
 
-  GenreSearchResponse getGenreSearch(GenreSearchParameters parameters);
+  GenreSearchResponse getGenreSearch(GenreSearchParameters parameters) throws Dmm4jException;
 
   HttpResponse<String> getGenreSearchRawResponse(GenreSearchParameters parameters)
       throws Dmm4jException;
 
-  MakerSearchResponse getMakerSearch(MakerSearchParameters parameters);
+  MakerSearchResponse getMakerSearch(MakerSearchParameters parameters) throws Dmm4jException;
 
   HttpResponse<String> getMakerSearchRawResponse(MakerSearchParameters parameters)
       throws Dmm4jException;
 
-  SeriesSearchResponse getSeriesSearch(SeriesSearchParameters parameters);
+  SeriesSearchResponse getSeriesSearch(SeriesSearchParameters parameters) throws Dmm4jException;
 
   HttpResponse<String> getSeriesSearchRawResponse(SeriesSearchParameters parameters)
       throws Dmm4jException;
 
-  AuthorSearchResponse getAuthorSearch(AuthorSearchParameters parameters);
+  AuthorSearchResponse getAuthorSearch(AuthorSearchParameters parameters) throws Dmm4jException;
 
   HttpResponse<String> getAuthorSearchRawResponse(AuthorSearchParameters parameters)
       throws Dmm4jException;

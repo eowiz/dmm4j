@@ -107,12 +107,10 @@ public final class Dmm4jImpl implements Dmm4j {
   }
 
   @Override
-  public ItemListResponse getItemList(ItemListParameters parameters) {
+  public ItemListResponse getItemList(ItemListParameters parameters) throws Dmm4jException {
     val params = this.buildQuery(parameters);
 
-    return Unirest.get(BASE_URL + "/ItemList")
-        .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
-        .asObject(ItemListResponse.class)
+    return get(BASE_URL + "/ItemList", params, ItemListResponse.class)
         .getBody();
   }
 
@@ -172,12 +170,10 @@ public final class Dmm4jImpl implements Dmm4j {
   }
 
   @Override
-  public FloorListResponse getFloorList(FloorListParameters parameters) {
+  public FloorListResponse getFloorList(FloorListParameters parameters) throws Dmm4jException {
     val params = this.buildQuery(parameters);
 
-    return Unirest.get(BASE_URL + "/FloorList")
-        .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
-        .asObject(FloorListResponse.class)
+    return get(BASE_URL + "/FloorList", params, FloorListResponse.class)
         .getBody();
   }
 
@@ -204,12 +200,11 @@ public final class Dmm4jImpl implements Dmm4j {
   }
 
   @Override
-  public ActressSearchResponse getActressSearch(ActressSearchParameters parameters) {
+  public ActressSearchResponse getActressSearch(ActressSearchParameters parameters)
+      throws Dmm4jException {
     val params = this.buildQuery(parameters);
 
-    return Unirest.get(BASE_URL + "/ActressSearch")
-        .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
-        .asObject(ActressSearchResponse.class)
+    return get(BASE_URL + "/ActressSearch", params, ActressSearchResponse.class)
         .getBody();
   }
 
@@ -268,12 +263,11 @@ public final class Dmm4jImpl implements Dmm4j {
   }
 
   @Override
-  public GenreSearchResponse getGenreSearch(GenreSearchParameters parameters) {
+  public GenreSearchResponse getGenreSearch(GenreSearchParameters parameters)
+      throws Dmm4jException {
     val params = this.buildQuery(parameters);
 
-    return Unirest.get(BASE_URL + "/GenreSearch")
-        .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
-        .asObject(GenreSearchResponse.class)
+    return get(BASE_URL + "/GenreSearch", params, GenreSearchResponse.class)
         .getBody();
   }
 
@@ -304,12 +298,11 @@ public final class Dmm4jImpl implements Dmm4j {
   }
 
   @Override
-  public MakerSearchResponse getMakerSearch(MakerSearchParameters parameters) {
+  public MakerSearchResponse getMakerSearch(MakerSearchParameters parameters)
+      throws Dmm4jException {
     val params = this.buildQuery(parameters);
 
-    return Unirest.get(BASE_URL + "/MakerSearch")
-        .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
-        .asObject(MakerSearchResponse.class)
+    return get(BASE_URL + "/MakerSearch", params, MakerSearchResponse.class)
         .getBody();
   }
 
@@ -340,12 +333,11 @@ public final class Dmm4jImpl implements Dmm4j {
   }
 
   @Override
-  public SeriesSearchResponse getSeriesSearch(SeriesSearchParameters parameters) {
+  public SeriesSearchResponse getSeriesSearch(SeriesSearchParameters parameters)
+      throws Dmm4jException {
     val params = this.buildQuery(parameters);
 
-    return Unirest.get(BASE_URL + "/SeriesSearch")
-        .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
-        .asObject(SeriesSearchResponse.class)
+    return get(BASE_URL + "/SeriesSearch", params, SeriesSearchResponse.class)
         .getBody();
   }
 
@@ -376,12 +368,11 @@ public final class Dmm4jImpl implements Dmm4j {
   }
 
   @Override
-  public AuthorSearchResponse getAuthorSearch(AuthorSearchParameters parameters) {
+  public AuthorSearchResponse getAuthorSearch(AuthorSearchParameters parameters)
+      throws Dmm4jException {
     val params = this.buildQuery(parameters);
 
-    return Unirest.get(BASE_URL + "/AuthorSearch")
-        .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
-        .asObject(AuthorSearchResponse.class)
+    return get(BASE_URL + "/AuthorSearch", params, AuthorSearchResponse.class)
         .getBody();
   }
 
@@ -430,5 +421,19 @@ public final class Dmm4jImpl implements Dmm4j {
       Thread.currentThread().interrupt();
       throw new Dmm4jException(e);
     }
+  }
+
+  private <T> kong.unirest.HttpResponse<T> get(String path, Stream<Map.Entry<String, String>> params, Class<T> clazz)
+      throws Dmm4jException {
+    final var response = Unirest.get(BASE_URL + path)
+        .queryString(params.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
+        .asObject(clazz);
+
+    final var parsingError = response.getParsingError();
+    if (parsingError.isPresent()) {
+      throw new Dmm4jException(parsingError.get());
+    }
+
+    return response;
   }
 }
